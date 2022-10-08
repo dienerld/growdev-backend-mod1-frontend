@@ -895,6 +895,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^18.8.3":
+  version: 18.8.3
+  resolution: "@types/node@npm:18.8.3"
+  checksum: 9201adc6dc389644c9f478f950ef8926a93e5827865dcd80d7d12fefacab665c96879c87cd6ec74d5eccdd998c4603d02e1e07a35d71a63fe4c20670a381f6ef
+  languageName: node
+  linkType: hard
+
 "@types/parse-json@npm:^4.0.0":
   version: 4.0.0
   resolution: "@types/parse-json@npm:4.0.0"
@@ -2541,6 +2548,7 @@ __metadata:
     "@mui/icons-material": ^5.10.6
     "@mui/material": ^5.10.8
     "@reduxjs/toolkit": ^1.8.5
+    "@types/node": ^18.8.3
     "@types/react": ^18.0.17
     "@types/react-dom": ^18.0.6
     "@types/react-router-dom": ^5.3.3
