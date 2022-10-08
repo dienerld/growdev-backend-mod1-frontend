@@ -2562,6 +2562,7 @@ __metadata:
     eslint-plugin-jsx-a11y: ^6.5.1
     eslint-plugin-react: ^7.28.0
     eslint-plugin-react-hooks: ^4.3.0
+    heroicons: ^2.0.12
     postcss: ^8.4.17
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -2827,6 +2828,13 @@ __metadata:
   dependencies:
     function-bind: ^1.1.1
   checksum: b9ad53d53be4af90ce5d1c38331e712522417d017d5ef1ebd0507e07c2fbad8686fffb8e12ddecd4c39ca9b9b47431afbb975b8abf7f3c3b82c98e9aad052792
+  languageName: node
+  linkType: hard
+
+"heroicons@npm:^2.0.12":
+  version: 2.0.12
+  resolution: "heroicons@npm:2.0.12"
+  checksum: 34233724e7fb069f9eaf6e59b9e777bce2cd2d049c4617aa1a44d4c6b310bd89e179cd7e5dae6f97fb5ef0237f2f9eaa810f2afead43e8dd07b364f47270c4b2
   languageName: node
   linkType: hard
 

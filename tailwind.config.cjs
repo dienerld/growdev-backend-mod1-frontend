@@ -1,11 +1,15 @@
+/* eslint-disable global-require */
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     './index.html',
-    './src/app/pages/*.tsx',
+    './src/app/pages/**/*.tsx',
   ],
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+  ],
+  important: true,
 };

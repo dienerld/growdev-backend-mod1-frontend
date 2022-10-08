@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import Redux, { createSlice } from '@reduxjs/toolkit';
 
-const initialState = 'dark';
+const initialState = 'light';
 
 const slice = createSlice({
   name: 'theme',

@@ -29,6 +29,7 @@ module.exports = {
     ],
     'import/prefer-default-export': 'off',
     'import/no-unresolved': 'off',
+    'import/no-extraneous-dependencies': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     'import/extensions': [
