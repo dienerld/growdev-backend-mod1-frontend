@@ -1,5 +1,5 @@
 export function App() {
   return (
-    <div>Diener</div>
+    <div className="text-3xl">Diener</div>
   );
 }
