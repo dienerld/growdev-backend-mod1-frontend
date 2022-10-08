@@ -989,6 +989,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/validator@npm:^13.7.7":
+  version: 13.7.7
+  resolution: "@types/validator@npm:13.7.7"
+  checksum: e32d2bc3b86317da2dff7565e371a2bd0108cdbd7c0b426070c9b9fab30cf07572eea4fb193cb7420261b2eb99b2fc112bf021d48f98eee181844a47533f817a
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/eslint-plugin@npm:latest":
   version: 5.39.0
   resolution: "@typescript-eslint/eslint-plugin@npm:5.39.0"
@@ -2552,6 +2559,7 @@ __metadata:
     "@types/react": ^18.0.17
     "@types/react-dom": ^18.0.6
     "@types/react-router-dom": ^5.3.3
+    "@types/validator": ^13.7.7
     "@typescript-eslint/eslint-plugin": latest
     "@typescript-eslint/parser": latest
     "@vitejs/plugin-react": ^2.1.0
@@ -2565,12 +2573,14 @@ __metadata:
     heroicons: ^2.0.12
     postcss: ^8.4.17
     react: ^18.2.0
+    react-card-flip: ^1.1.5
     react-dom: ^18.2.0
     react-redux: ^8.0.4
     react-router-dom: ^6.4.2
     redux-persist: ^6.0.0
     tailwindcss: ^3.1.8
     typescript: ^4.6.4
+    validator: ^13.7.0
     vite: ^3.1.0
   languageName: unknown
   linkType: soft
@@ -3916,6 +3926,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-card-flip@npm:^1.1.5":
+  version: 1.1.5
+  resolution: "react-card-flip@npm:1.1.5"
+  peerDependencies:
+    react: ^17.0.1
+    react-dom: ^17.0.1
+  checksum: f46711bed0ca53ae1eb9f5fe86764a38b3e8959ab27f645a82e059767a8074519fd7c4c54915c03f04381a2ed5ccddf813e047304fc1b4ec6bdbfdae760d894a
+  languageName: node
+  linkType: hard
+
 "react-dom@npm:^18.2.0":
   version: 18.2.0
   resolution: "react-dom@npm:18.2.0"
@@ -4708,6 +4728,13 @@ __metadata:
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
   checksum: 474acf1146cb2701fe3b074892217553dfcf9a031280919ba1b8d651a068c9b15d863b7303cb15bd00a862b498e6cf4ad7b4a08fb134edd5a6f7641681cb54a2
+  languageName: node
+  linkType: hard
+
+"validator@npm:^13.7.0":
+  version: 13.7.0
+  resolution: "validator@npm:13.7.0"
+  checksum: 2b83283de1222ca549a7ef57f46e8d49c6669213348db78b7045bce36a3b5843ff1e9f709ebf74574e06223461ee1f264f8cc9a26a0060a79a27de079d8286ef
   languageName: node
   linkType: hard
 
