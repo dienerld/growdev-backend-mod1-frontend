@@ -8,7 +8,6 @@ export const lightTheme = createTheme({
     },
     background: {
       default: '#ffffff',
-      search: '#f5f5f5',
     },
   },
 });
