@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { typeReducers } from '@redux/modules/rootReducer';
 import { getTheme } from '@styles/themes';
 
-import { Private } from '@pages/Private';
+import { Private, Task } from '@pages/Private';
 import { Login, Public } from '@pages/Public';
 
 export function App() {
@@ -23,7 +23,7 @@ export function App() {
       <CssBaseline />
       <Routes>
         <Route path="/dashboard" element={<Private />}>
-          <Route index element={<h1>Private</h1>} />
+          <Route index element={<Task />} />
           <Route path="s" element={<h1>Private3213</h1>} />
         </Route>
 
