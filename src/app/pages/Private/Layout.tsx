@@ -21,11 +21,11 @@ export function Private() {
           const logged = payload;
 
           if (!logged) {
-            redirect('/login');
+            redirect('/');
           }
         }
       } catch (err) {
-        redirect('/login');
+        redirect('/');
       }
     })();
   }, []);

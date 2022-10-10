@@ -3,8 +3,11 @@ import validator from 'validator';
 
 import { LockClosedIcon, LockOpenIcon } from '@heroicons/react/20/solid';
 import {
+  Alert,
+  AlertColor,
   Box, Button, Paper, TextField,
 } from '@mui/material';
+import { axios } from '@/app/services/axios';
 
 type SignUpProps = {
   handleFlip: () => void;
@@ -24,11 +27,14 @@ export function SignUp({ handleFlip }: SignUpProps) {
   const [passwordConfirmationIsValid, setPasswordConfirmationIsValid] = useState(true);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const [error, setError] = useState({ status: 'warning', message: '' });
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
+    const input = event.target.value.replace(/\s{1,}/, '');
+    setName(input);
 
-    validator.isAlpha(event.target.value)
+    validator.isAlpha(event.target.value, undefined, { ignore: ' ' })
       ? setNameIsValid(true)
       : setNameIsValid(false);
   };
@@ -60,7 +66,27 @@ export function SignUp({ handleFlip }: SignUpProps) {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('submitting');
+    (async () => {
+      try {
+        const response = await axios.post('/users', {
+          name,
+          email,
+          password,
+          password_confirm: passwordConfirmation,
+        });
+
+        if (response.status === 201) {
+          handleFlip();
+        }
+      } catch (err: any) {
+        setHasError(true);
+        if (err?.response.status === 400) {
+          setError({ message: err?.response?.data?.error || err.message, status: 'warning' });
+        } else {
+          setError({ message: err?.response?.data?.error || err.message, status: 'error' });
+        }
+      }
+    })();
   };
 
   useEffect(() => {
@@ -76,10 +102,16 @@ export function SignUp({ handleFlip }: SignUpProps) {
   }, [nameIsValid, emailIsValid, passwordIsValid, passwordConfirmation]);
 
   useEffect(() => {
+    setHasError(false);
+  }, [name, email, password, passwordConfirmation]);
+
+  useEffect(() => {
     setIsSubmitting(false);
   }, []);
+
   return (
     <Box className="flex flex-1 justify-center content-center items-center">
+
       <Paper className="p-8 max-w-md w-full space-y-8">
         <div className="w-full max-w-md space-y-8">
           <div>
@@ -102,6 +134,13 @@ export function SignUp({ handleFlip }: SignUpProps) {
               </button>
             </p>
           </div>
+          <Alert
+            severity={error.status as AlertColor}
+            sx={{
+              display: hasError ? 'flex' : 'none',
+            }}
+          >{error.message}
+          </Alert>
           <Box
             component="form"
             autoComplete="off"
@@ -119,7 +158,7 @@ export function SignUp({ handleFlip }: SignUpProps) {
                 onChange={handleNameChange}
                 fullWidth
                 error={!nameIsValid}
-                helperText={nameIsValid ? '' : 'Name must be only letters'}
+                helperText={nameIsValid ? '' : 'Name must be only letters and spaces'}
                 className="mb-4"
                 InputProps={{
                   className: 'rounded-md border-gray-300 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm',

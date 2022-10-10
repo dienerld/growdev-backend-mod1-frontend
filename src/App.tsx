@@ -8,7 +8,7 @@ import { typeReducers } from '@redux/modules/rootReducer';
 import { getTheme } from '@styles/themes';
 
 import { Private } from '@pages/Private';
-import { Home, Login, Public } from '@pages/Public';
+import { Login, Public } from '@pages/Public';
 
 export function App() {
   const nameTheme = useSelector((state: typeReducers) => state.theme) as 'light' | 'dark';
@@ -28,8 +28,7 @@ export function App() {
         </Route>
 
         <Route path="/" element={<Public />}>
-          <Route index element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          <Route index element={<Login />} />
         </Route>
 
         <Route path="*" element={<h1>404</h1>} />
