@@ -4,11 +4,11 @@ import { Route, Routes } from 'react-router-dom';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 
 import { useSelector } from 'react-redux';
-import { typeReducers } from './app/store/modules/rootReducer';
-import { getTheme } from './styles/themes';
+import { typeReducers } from '@redux/modules/rootReducer';
+import { getTheme } from '@styles/themes';
 
-import { Home, Login, Public } from './app/pages/Public';
-import { Private } from './app/pages/Private';
+import { Private } from '@pages/Private';
+import { Home, Login, Public } from '@pages/Public';
 
 export function App() {
   const nameTheme = useSelector((state: typeReducers) => state.theme) as 'light' | 'dark';

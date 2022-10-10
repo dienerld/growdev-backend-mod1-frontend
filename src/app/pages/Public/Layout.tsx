@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { isLogged } from '../../store/modules/user';
+import { useAppDispatch, useAppSelector } from '@redux/hooks';
+import { isLogged } from '@redux/modules/user';
 
 export function Public() {
   const user = useAppSelector((state) => state.user);

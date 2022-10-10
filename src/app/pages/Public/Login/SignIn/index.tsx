@@ -7,9 +7,9 @@ import {
   Box, Button, Checkbox,
   FormControlLabel, Paper, TextField,
 } from '@mui/material';
-import { useAppDispatch } from '../../../../store/hooks';
-import { userActions } from '../../../../store/modules/user';
-import { axios } from '../../../../services/axios';
+import { useAppDispatch } from '@redux/hooks';
+import { userActions } from '@redux/modules/user';
+import { axios } from '@services/axios';
 
 type SignInProps = {
   handleFlip: () => void;

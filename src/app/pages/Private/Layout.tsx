@@ -2,8 +2,9 @@ import { useEffect } from 'react';
 import {
   Outlet, useNavigate,
 } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { isLogged, userActions } from '../../store/modules/user';
+
+import { useAppDispatch, useAppSelector } from '@redux/hooks';
+import { isLogged, userActions } from '@redux/modules/user';
 
 export function Private() {
   const user = useAppSelector((state) => state.user);
