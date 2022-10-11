@@ -57,7 +57,7 @@ export function SignIn({ handleFlip }: SignInProps) {
     (async () => {
       const { data } = await axios.post('/users/login', { email, password });
       dispatch(userActions.login({ token: data.token, remember: rememberMe }));
-      redirect('/dashboard');
+      redirect('/auth');
     })();
   };
 

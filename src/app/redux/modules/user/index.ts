@@ -6,10 +6,16 @@ import jwtDecode from 'jwt-decode';
 
 type TAction = {
   token: string,
+  user: {
+    name: string,
+    email: string,
+  }
   remember: boolean,
 }
 
 const initialState = {
+  name: undefined,
+  email: undefined,
   token: undefined,
   remember: false,
 };
@@ -55,9 +61,18 @@ const slice = createSlice({
     // @ts-expect-error
     login: (_, action: PayloadAction<TAction>) => {
       sessionStorage.setItem(`persist:${keySession}`, JSON.stringify(action.payload));
-      return action.payload;
+      const decoded = jwtDecode<TJwtDecode>(action.payload.token);
+      return {
+        token: action.payload.token,
+        remember: action.payload.remember,
+        name: decoded.name,
+        email: decoded.email,
+      };
     },
-    logout: () => initialState,
+    logout: () => {
+      sessionStorage.removeItem(`persist:${keySession}`);
+      return initialState;
+    },
   },
   extraReducers(builder) {
     builder.addCase(isLogged.rejected, () => initialState);

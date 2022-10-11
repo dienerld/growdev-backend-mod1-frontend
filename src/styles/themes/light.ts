@@ -7,7 +7,7 @@ export const lightTheme = createTheme({
       primary: '#212121',
     },
     background: {
-      default: '#ffffff',
+      default: '#EDDBDC',
     },
   },
 });

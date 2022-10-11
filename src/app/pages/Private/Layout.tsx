@@ -5,6 +5,7 @@ import {
 
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { isLogged, userActions } from '@redux/modules/user';
+import { Navbar } from './components/Navbar';
 
 export function Private() {
   const user = useAppSelector((state) => state.user);
@@ -31,6 +32,9 @@ export function Private() {
   }, []);
 
   return (
-    <Outlet />
+    <>
+      <Navbar />
+      <Outlet />
+    </>
   );
 }

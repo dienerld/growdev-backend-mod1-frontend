@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { isLogged } from '@redux/modules/user';
+import { Navbar } from './components/Navbar';
 
 export function Public() {
   const user = useAppSelector((state) => state.user);
@@ -10,18 +11,21 @@ export function Public() {
 
   useEffect(() => {
     if (user.remember) {
-      redirect('/dashboard');
+      redirect('/auth');
     }
 
     (async () => {
       const { payload: logged } = await dispatch(isLogged());
       if (logged) {
-        redirect('/dashboard');
+        redirect('/auth');
       }
     })();
   }, []);
 
   return (
-    <Outlet />
+    <>
+      <Navbar />
+      <Outlet />
+    </>
   );
 }
