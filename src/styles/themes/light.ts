@@ -8,7 +8,7 @@ export const lightTheme = createTheme({
     },
     background: {
       default: '#EDDBDC',
-      btn: '#796162',
+      primary: '#796162',
     },
   },
 });

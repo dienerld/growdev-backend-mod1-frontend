@@ -5,10 +5,13 @@ export const darkTheme = createTheme({
     mode: 'dark',
     background: {
       default: '#282424',
-      btn: '#3c2e2e',
+      primary: '#3c2e2e',
     },
     text: {
-      primary: '#ffffff',
+      primary: '#8c8b8b',
+    },
+    primary: {
+      main: '#1dfbe5',
     },
   },
 });
