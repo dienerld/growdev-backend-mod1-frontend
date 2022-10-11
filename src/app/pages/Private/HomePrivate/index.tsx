@@ -41,25 +41,29 @@ export function HomePrivate() {
   }, []);
 
   return (
-    <Box>
+    <>
+      {loading && <div>Loading</div>}
+      {!loading && (
+      <Box>
+        <h1>{user.name}</h1>
+        {user.tasks.map((task) => <Task key={task.id} title={task.title} />)}
 
-      <h1>{user.name}</h1>
-      {user.tasks.map((task) => <Task key={task.id} title={task.title} />)}
-
-      {/* float button  */}
-      <Box className="absolute right-6 bottom-6">
-        <Fab
-          aria-label="like"
-          variant="extended"
-          sx={{
-            backgroundColor: theme.palette.background.primary,
-            color: theme.palette.text.secondary,
-          }}
-        >
-          <Typography sx={{ mr: 1 }}>New Task</Typography>
-          <AddCircleOutlineIcon />
-        </Fab>
+        {/* float button  */}
+        <Box className="absolute right-6 bottom-6">
+          <Fab
+            aria-label="like"
+            variant="extended"
+            sx={{
+              backgroundColor: theme.palette.background.primary,
+              color: theme.palette.text.secondary,
+            }}
+          >
+            <Typography sx={{ mr: 1 }}>New Task</Typography>
+            <AddCircleOutlineIcon />
+          </Fab>
+        </Box>
       </Box>
-    </Box>
+      )}
+    </>
   );
 }
