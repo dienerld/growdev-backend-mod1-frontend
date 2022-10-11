@@ -1,2 +1,2 @@
-export { Private } from './Layout';
-export { Task } from './Task';
+export * from './Layout';
+export * from './HomePrivate';
