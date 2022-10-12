@@ -27,7 +27,7 @@ module.exports = {
         extensions: ['.tsx'],
       },
     ],
-    'no-unused-expressions': ['error', { allowTernary: true }],
+    'no-unused-expressions': ['error', { allowTernary: true, allowShortCircuit: true }],
     'import/prefer-default-export': 'off',
     'import/no-unresolved': 'off',
     'import/no-extraneous-dependencies': 'off',
