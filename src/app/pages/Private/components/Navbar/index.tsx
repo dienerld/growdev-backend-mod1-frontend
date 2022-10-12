@@ -3,48 +3,33 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import {
   AppBar, Box, Container, IconButton, Menu, Divider,
-  MenuItem, Toolbar, Typography, Button, Avatar, Switch,
+  MenuItem, Toolbar, Typography, Avatar, Switch,
 } from '@mui/material';
 import {
   Adb as AdbIcon,
-  Menu as MenuIcon,
   DarkMode as DarkModeIcon,
   LightMode as LightModeIcon,
 } from '@mui/icons-material';
 
-import { setTheme } from '@redux/modules/theme';
+import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { typeReducers } from '@redux/modules/rootReducer';
-import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
-import { userActions } from '@/app/redux/modules/user';
-import { taskActions } from '@/app/redux/modules/tasks';
+import { setTheme } from '@redux/modules/theme';
+import { userActions } from '@redux/modules/user';
+import { taskActions } from '@redux/modules/tasks';
 
 type HeaderProps = {
-  pages?: string[];
-  settings?: string[];
+  settings: string[];
 }
 
-function customNormalize(str: string) {
-  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-}
-
-export const Navbar = ({ pages }: HeaderProps) => {
-  const settings = ['My Profile'];
+export const Navbar = ({ settings }: HeaderProps) => {
   const redirect = useNavigate();
   const dispatch = useAppDispatch();
   const themeName = useAppSelector((state: typeReducers) => state.theme) as 'light' | 'dark';
 
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = () => {
@@ -71,100 +56,26 @@ export const Navbar = ({ pages }: HeaderProps) => {
       <Container
         maxWidth={false}
       >
-        <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', sm: 'flex' }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', sm: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Welcome, {name}
-          </Typography>
+        <Toolbar
+          disableGutters
+          className="flex flex-grow flex-1 items-center justify-between "
+        >
+          <Box className="flex items-center">
+            <AdbIcon sx={{ display: { xs: 'none', sm: 'flex' }, mr: 1 }} />
+            <Link to="/" className="hidden sm:block mr-2 text-white text-xl flex-nowrap font-bold  tracking-[0.2rem]">
+              Welcome, {name}
+            </Link>
+
+          </Box>
 
           {/* <= MD */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', sm: 'none' } }}>
-            {pages && (
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-
-              >
-                <MenuIcon />
-              </IconButton>
-            )}
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              {pages?.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography
-                    variant="body1"
-                    textAlign="center"
-                    className="text-inherit text-lg hover:bg-transparent hover:underline hover:decoration-solid "
-                  >
-                    <Link to={`/${customNormalize(page)}`}>
-                      {page}
-                    </Link>
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
           <AdbIcon sx={{ display: { xs: 'flex', sm: 'none' }, mr: 1, position: 'absolute' }} />
-          <Box
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' } }}
-            className="justify-evenly mx-4"
-          >
-            {pages?.map((page) => (
-              <Button
-                type="button"
-                key={page}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-                className="text-inherit font-bold text-lg hover:bg-transparent hover:underline hover:decoration-solid "
-              >
-                <Link to={`/${customNormalize(page)}`}>
-                  {page}
-                </Link>
-              </Button>
-            ))}
-          </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
+          <Box>
             <IconButton
-              onClick={(e) => (settings?.length ? handleOpenUserMenu(e) : null)}
+              onClick={handleOpenUserMenu}
               sx={{ p: 0 }}
-              disabled={!settings?.length}
             >
-              <Avatar alt="Remy Sharp" src={`https://robohash.org/${new Date().getMinutes()}`} />
+              <Avatar alt={name} src={`https://robohash.org/${new Date().getMinutes()}`} />
             </IconButton>
             <Menu
               sx={{ mt: '45px' }}
@@ -199,9 +110,12 @@ export const Navbar = ({ pages }: HeaderProps) => {
                   className="text-sm"
                 />
               </MenuItem>
+              <MenuItem key="profile" onClick={handleCloseUserMenu}>
+                <Link to="/auth/profile">My Profile</Link>
+              </MenuItem>
               {settings?.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Link to="/auth/profile">{setting}</Link>
+                  <Link to={setting}>{setting}</Link>
                 </MenuItem>
               ))}
               <Divider />
