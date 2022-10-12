@@ -7,6 +7,9 @@ module.exports = {
     './src/app/pages/**/*.tsx',
   ],
   theme: {
+    screens: {
+      sm: '600px',
+    },
     extend: {},
   },
   plugins: [
