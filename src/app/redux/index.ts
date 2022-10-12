@@ -10,7 +10,7 @@ const rootConfig = {
   key: 'dnr-growdev-modbackend',
   storage,
   whitelist: ['theme', 'user'],
-  blacklist: [],
+  blacklist: ['tasks'],
 };
 
 export const persistedReducer = persistReducer(rootConfig, rootReducers);

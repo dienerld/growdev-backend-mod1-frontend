@@ -16,6 +16,7 @@ import { setTheme } from '@redux/modules/theme';
 import { typeReducers } from '@redux/modules/rootReducer';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import { userActions } from '@/app/redux/modules/user';
+import { taskActions } from '@/app/redux/modules/tasks';
 
 type HeaderProps = {
   pages?: string[];
@@ -57,6 +58,7 @@ export const Navbar = ({ pages }: HeaderProps) => {
   const handleLogout = () => {
     handleCloseUserMenu();
     dispatch(userActions.logout(null));
+    dispatch(taskActions.clearTasks());
     redirect('/');
   };
 
