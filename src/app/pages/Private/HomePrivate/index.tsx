@@ -24,7 +24,7 @@ export function HomePrivate() {
       {!loading && tasks.length === 0 && (<NoTask />)}
       {!loading && tasks.length > 0 && (
         <Box className="flex flex-col gap-4 mx-2 sm:mx-8">
-          {tasks.map((task) => <Task key={task.id} task={task} />)}
+          {tasks.map((task) => !task.hidden && <Task key={task.id} task={task} />)}
         </Box>
       )}
       <Link to="/auth/profile">New Task</Link>
