@@ -4,12 +4,18 @@ export const lightTheme = createTheme({
   palette: {
     mode: 'light',
     text: {
-      primary: '#212121',
+      primary: '#EDDBDC',
       secondary: '#fff',
     },
     background: {
       default: '#EDDBDC',
       primary: '#796162',
+    },
+    warning: {
+      main: '#FDFF94',
+    },
+    error: {
+      main: '#FD7179',
     },
   },
 });
