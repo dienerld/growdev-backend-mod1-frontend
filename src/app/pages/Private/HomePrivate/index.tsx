@@ -23,8 +23,8 @@ export function HomePrivate() {
       {loading && <div>Loading</div>}
       {!loading && tasks.length === 0 && (<NoTask />)}
       {!loading && tasks.length > 0 && (
-        <Box className="flex flex-col gap-4">
-          {tasks.map((task) => <Task key={task.id} title={task.title} />)}
+        <Box className="flex flex-col gap-4 mx-2 sm:mx-8">
+          {tasks.map((task) => <Task key={task.id} task={task} />)}
         </Box>
       )}
       <Link to="/auth/profile">New Task</Link>
