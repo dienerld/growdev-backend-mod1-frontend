@@ -17,26 +17,20 @@ export function Private() {
   const redirect = useNavigate();
 
   useEffect(() => {
-    (async () => {
-      try {
-        if (user.remember) {
-          dispatch(userActions.login(user));
-        } else {
-          const logged = (await dispatch(isLogged())).payload as boolean;
-          !logged && redirect('/');
-        }
+    if (user.remember) {
+      dispatch(userActions.login(user));
+    } else {
+      dispatch(isLogged())
+        .then((res) => !res.payload && redirect('/'))
+        .catch(() => redirect('/'));
+    }
 
-        if (totalTasks === 0) {
-          const { data } = await axios.get<ResponseUser>(
-            '/users',
-            { headers: { Authorization: `Bearer ${user.token}` } },
-          );
-          dispatch(taskActions.addManyTasks(data.tasks));
-        }
-      } catch (err) {
-        redirect('/');
-      }
-    })();
+    if (totalTasks === 0) {
+      const headers = { Authorization: `Bearer ${user.token}` };
+      axios.get<ResponseUser>('/users', { headers })
+        .then(({ data }) => dispatch(taskActions.addManyTasks(data.tasks)))
+        .catch(() => redirect('/'));
+    }
   }, []);
 
   return (
