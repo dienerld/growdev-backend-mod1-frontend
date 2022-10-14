@@ -1,22 +1,23 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { TextField } from '@mui/material';
-import { LocalizationProvider, MobileTimePicker } from '@mui/x-date-pickers';
+import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Dayjs } from 'dayjs';
 
-type TimePickerProps = {
+type DatePickerProps = {
   value: Dayjs | null;
   // eslint-disable-next-line no-unused-vars
   setValue: (date: Dayjs | null) => void;
 }
 
-export function CustomTimePicker({ setValue, value }:TimePickerProps) {
+export function CustomDatePicker({ setValue, value }:DatePickerProps) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <MobileTimePicker
+      <MobileDatePicker
+        inputFormat="DD/MM/YYYY"
         value={value}
         onChange={setValue}
-        className="bg-white focus:shadow-none rounded-full"
+        className=" bg-white focus:shadow-none rounded-full"
         renderInput={(params) => (
           <TextField
             {...params}
@@ -28,7 +29,7 @@ export function CustomTimePicker({ setValue, value }:TimePickerProps) {
           />
         )}
       />
-
     </LocalizationProvider>
+
   );
 }
