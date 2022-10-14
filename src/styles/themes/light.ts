@@ -10,6 +10,8 @@ export const lightTheme = createTheme({
     background: {
       default: '#EDDBDC',
       primary: '#796162',
+      secondary: '#262021',
+      paper: '#b1afaf',
     },
     warning: {
       main: '#FDFF94',
@@ -17,5 +19,6 @@ export const lightTheme = createTheme({
     error: {
       main: '#FD7179',
     },
+
   },
 });
