@@ -5,7 +5,7 @@ import validator from 'validator';
 import { LockClosedIcon, LockOpenIcon } from '@heroicons/react/20/solid';
 import {
   Box, Button, Checkbox,
-  FormControlLabel, Paper, TextField,
+  FormControlLabel, Paper, TextField, Typography,
 } from '@mui/material';
 import { useAppDispatch } from '@redux/hooks';
 import { userActions } from '@redux/modules/user';
@@ -73,19 +73,19 @@ export function SignIn({ handleFlip }: SignInProps) {
   }, [emailIsValid, passwordIsValid, email, password]);
 
   return (
-    <Box className="flex flex-1 justify-center content-center items-center">
+    <Box className="flex flex-1 justify-center content-center items-center ">
       <Paper className="p-8 max-w-md w-full space-y-8">
-        <div className="w-full max-w-md space-y-8">
+        <Box className="w-full max-w-md space-y-8">
           <div>
             <img
               className="mx-auto h-12 w-auto"
               src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
               alt="Your Company"
             />
-            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight ">
+            <Typography className="mt-6 text-center text-3xl font-bold tracking-tight text-inherit">
               Sign in to your account
-            </h2>
-            <p className="mt-2 text-center text-sm text-gray-600">
+            </Typography>
+            <p className="mt-2 text-center text-sm">
               Or{' '}
               <button
                 className="font-medium text-indigo-600 hover:text-indigo-500"
@@ -104,7 +104,7 @@ export function SignIn({ handleFlip }: SignInProps) {
             onSubmit={handleSubmit}
           >
             <input type="hidden" name="remember" defaultValue="true" />
-            <div className="rounded-md shadow-sm">
+            <Box className="rounded-md shadow-sm text-inherit">
               <TextField
                 id="email"
                 label="Email"
@@ -114,9 +114,11 @@ export function SignIn({ handleFlip }: SignInProps) {
                 fullWidth
                 error={!emailIsValid}
                 helperText={emailIsValid ? '' : 'Please enter a valid email'}
-                className="mb-4"
                 InputProps={{
-                  className: 'rounded-t-md border-gray-300 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm',
+                  className: 'rounded-t-md border-gray-300 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm text-inherit',
+                  sx: {
+                    '& input:focus': { boxShadow: 0 },
+                  },
                 }}
               />
 
@@ -127,14 +129,17 @@ export function SignIn({ handleFlip }: SignInProps) {
                 value={password}
                 onChange={handlePasswordChange}
                 fullWidth
+                className="mt-4"
                 error={!passwordIsValid}
                 helperText={passwordIsValid ? '' : 'Password must be at least 5 characters'}
-                className="mb-4"
                 InputProps={{
-                  className: 'rounded-none rounded-b-md  border-gray-300 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm',
+                  className: 'rounded-none rounded-b-md  border-gray-300 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm text-inherit',
+                  sx: {
+                    '& input:focus': { boxShadow: 0 },
+                  },
                 }}
               />
-            </div>
+            </Box>
 
             <Box className="flex flex-col items-center justify-between sm:flex-row">
               <FormControlLabel
@@ -179,7 +184,7 @@ export function SignIn({ handleFlip }: SignInProps) {
               </Button>
             </div>
           </Box>
-        </div>
+        </Box>
       </Paper>
     </Box>
 

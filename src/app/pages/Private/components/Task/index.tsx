@@ -28,7 +28,7 @@ export function Task({ task }: TTaskProps) {
     <Box
       className="grid grid-cols-12 rounded-3xl p-4"
       sx={{
-        backgroundColor: 'background.primary',
+        backgroundColor: 'background.paper',
         color: 'text.primary',
       }}
     >
@@ -58,8 +58,8 @@ export function Task({ task }: TTaskProps) {
       </Typography>
 
       <Typography className="hidden sm:flex col-span-2 items-center justify-end gap-4">
-        <EditIcon fontSize="small" color="warning" />
-        <DeleteIcon fontSize="small" color="error" />
+        <EditIcon fontSize="small" sx={{ color: 'custom.icons.edit' }} />
+        <DeleteIcon fontSize="small" sx={{ color: 'custom.icons.delete' }} />
       </Typography>
 
     </Box>

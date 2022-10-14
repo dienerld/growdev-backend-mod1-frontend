@@ -28,7 +28,7 @@ export function SignUp({ handleFlip }: SignUpProps) {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [error, setError] = useState({ status: 'warning', message: '' });
+  const [error, setError] = useState({ status: 'success', message: '' });
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value.replace(/\s{1,}/, '');
@@ -137,9 +137,10 @@ export function SignUp({ handleFlip }: SignUpProps) {
           <Alert
             severity={error.status as AlertColor}
             sx={{
-              display: hasError ? 'flex' : 'none',
+              color: 'text.primary',
+              display: hasError ? 'flex' : 'flex',
             }}
-          >{error.message}
+          >{error.message || 'Internal Server error'}
           </Alert>
           <Box
             component="form"
