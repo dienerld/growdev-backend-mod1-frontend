@@ -51,7 +51,8 @@ export const Navbar = ({ settings }: HeaderProps) => {
   return (
     <AppBar
       position="static"
-      className="bg-[#262021]   shadow-none "
+      className="shadow-none"
+      sx={{ backgroundColor: 'background.secondary' }}
     >
       <Container
         maxWidth={false}
