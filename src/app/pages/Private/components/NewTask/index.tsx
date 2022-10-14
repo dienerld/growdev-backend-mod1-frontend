@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
+import { useState } from 'react';
 import {
   Box, Fab, Modal,
   TextField,
@@ -6,17 +7,22 @@ import {
 } from '@mui/material';
 import { AddCircleOutline as AddCircleOutlineIcon } from '@mui/icons-material';
 import { shade } from 'polished';
-import { useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 
 import { CustomDatePicker } from './DatePicker';
 import { CustomTimePicker } from './TimePicker';
+import { axios } from '@/app/services/axios';
+import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
+import { taskActions } from '@/app/redux/modules/tasks';
 
 export function NewTask() {
   const theme = useTheme();
-  const [value, setValue] = useState<Dayjs | null>(
-    dayjs('2018-01-01T00:00:00.000Z'),
-  );
+  const user = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+
+  const [date, setDate] = useState<Dayjs | null>(dayjs(new Date()));
+  const [hour, setHour] = useState<Dayjs | null>(dayjs(new Date()));
+  const [title, setTitle] = useState('');
 
   const setShade = (): string => {
     const { mode, background } = theme.palette;
@@ -37,7 +43,22 @@ export function NewTask() {
     width: 400,
     border: '2px solid #000',
     boxShadow: 24,
-    p: 4,
+    p: 3,
+  };
+
+  const handleSaveTask = async () => {
+    try {
+      const headers = { authorization: `Bearer ${user.token}` };
+      const { data } = await axios.post('/tasks', {
+        title, date, hour: hour?.format('HH:mm'),
+      }, { headers });
+
+      dispatch(taskActions.addTask(data));
+      setTitle('');
+      setDate(dayjs(new Date()));
+      setHour(dayjs(new Date()));
+      handleClose();
+    } catch (err) { /** */ }
   };
 
   return (
@@ -49,44 +70,69 @@ export function NewTask() {
         aria-describedby="modal-modal-description"
       >
         <Box
-          component="form"
-          autoComplete="off"
           sx={modalStyle}
-          className="flex flex-col justify-center items-center rounded-[40px] w-10/12 sm:w-6/12 sm:min-w-[500px] lg:w-5/12 lg:max-w-[800px]  h-3/6"
+          className="flex flex-col justify-center items-center rounded-[40px] w-10/12 sm:w-6/12 sm:min-w-[500px] lg:w-5/12 lg:max-w-[800px] "
           color="text.secondary"
         >
-          <Typography id="modal-modal-title" variant="h4" component="h4">
-            New Task
-          </Typography>
+          <Box
+            component="form"
+            autoComplete="off"
+            className="flex flex-col justify-center items-center w-full h-full"
+          >
+            <Typography id="modal-modal-title" variant="h4" component="h4">
+              New Task
+            </Typography>
 
-          <Box className="flex flex-col flex-1 justify-center content-center items-center w-10/12 md:w-8/12 min-w-[180px] mt-4">
-            <Box className="flex flex-col flex-1 items-center w-full">
-              <Typography id="modal-modal-description">
-                Title
-              </Typography>
-              <TextField
-                className="w-full"
-                InputProps={{
-                  className: 'rounded-full bg-white h-10',
-                  sx: { '& input:focus': { boxShadow: 0 } },
-                }}
-              />
+            <Box className="flex flex-col flex-1 justify-center content-center items-center w-10/12 md:w-8/12 min-w-[180px] mt-4 gap-4">
+              <Box className="flex flex-col flex-1 items-center w-full">
+                <Typography variant="h5" component="h5">
+                  Title
+                </Typography>
+                <TextField
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="w-full"
+                  InputProps={{
+                    className: 'rounded-full bg-white h-10',
+                    sx: { '& input:focus': { boxShadow: 0 } },
+                  }}
+                />
+              </Box>
+
+              <Box className="flex flex-col flex-1 items-center">
+                <Typography variant="h5" component="h5">
+                  Date
+                </Typography>
+                <CustomDatePicker setValue={setDate} value={date} />
+              </Box>
+
+              <Box className="flex flex-col flex-1 items-center">
+                <Typography variant="h5" component="h5">
+                  Hour
+                </Typography>
+                <CustomTimePicker setValue={setHour} value={hour} />
+              </Box>
             </Box>
+          </Box>
 
-            <Box className="flex flex-col flex-1 items-center">
-              <Typography id="modal-modal-description">
-                Date
-              </Typography>
-              <CustomDatePicker setValue={setValue} value={value} />
-            </Box>
-
-            <Box className="flex flex-col flex-1 items-center">
-              <Typography id="modal-modal-description">
-                Hour
-              </Typography>
-              <CustomTimePicker setValue={setValue} value={value} />
-            </Box>
-
+          <Box className="flex flex-col flex-1 content-center items-end w-full mt-8 -mb-2 -mr-2">
+            <Fab
+              color="primary"
+              variant="extended"
+              aria-label="add"
+              onClick={handleSaveTask}
+              disabled={title === ''}
+              sx={{
+                backgroundColor: 'background.default',
+                color: 'text.primary',
+                '&:hover': {
+                  backgroundColor: shade(0.2, theme.palette.background.default),
+                },
+              }}
+            >
+              <Typography variant="body1" className="mr-2">Add{'  '}</Typography>
+              <AddCircleOutlineIcon />
+            </Fab>
           </Box>
         </Box>
       </Modal>
@@ -96,8 +142,8 @@ export function NewTask() {
           aria-label="like"
           variant="extended"
           sx={{
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.secondary,
+            backgroundColor: 'background.paper',
+            color: 'text.secondary',
             '&:hover': { backgroundColor: setShade() },
           }}
           onClick={handleOpen}
