@@ -1,10 +1,12 @@
 import {
   Box, Fab, Modal,
+  TextField,
   Typography, useTheme,
 } from '@mui/material';
 import { AddCircleOutline as AddCircleOutlineIcon } from '@mui/icons-material';
 import { shade } from 'polished';
 import { useState } from 'react';
+import BasicTimePicker from './TimePicker';
 
 export function NewTask() {
   const theme = useTheme();
@@ -44,15 +46,37 @@ export function NewTask() {
           className="flex flex-col justify-center items-center rounded-[40px] w-9/12 h-3/6"
           color="text.secondary"
         >
-          <Typography id="modal-modal-title" variant="h4" component="h2">
-            Text in a modal
+          <Typography id="modal-modal-title" variant="h4" component="h4">
+            New Task
           </Typography>
 
-          <Box className="flex flex-col flex-1 justify-center content-center items-center">
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </Typography>
-            <input className="rounded-full h-10 w-9/12" />
+          <Box className="flex flex-col flex-1 justify-center content-center items-center w-5/12 mt-4">
+            <Box className="flex flex-col flex-1 items-center">
+              <Typography id="modal-modal-description">
+                Title
+              </Typography>
+              <TextField
+                className="rounded-full bg-white text-black shadow-none"
+                InputProps={{
+                  className: 'rounded-full h-10 min-w-full w-full sm:w-5/6 text-black p-0',
+                  sx: { '& input:focus': { boxShadow: 0 } },
+                }}
+              />
+            </Box>
+
+            <Box className="flex flex-col flex-1 items-center">
+              <Typography id="modal-modal-description">
+                Date
+              </Typography>
+
+            </Box>
+
+            <Box className="flex flex-col flex-1 items-center">
+              <Typography id="modal-modal-description">
+                Title
+              </Typography>
+              <BasicTimePicker />
+            </Box>
 
           </Box>
         </Box>
