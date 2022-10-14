@@ -4,21 +4,22 @@ export const lightTheme = createTheme({
   palette: {
     mode: 'light',
     text: {
-      primary: '#EDDBDC',
-      secondary: '#fff',
+      primary: '#000000',
+      secondary: '#EDDBDC',
+    },
+    primary: {
+      main: '#262021',
     },
     background: {
-      default: '#EDDBDC',
-      primary: '#796162',
-      secondary: '#262021',
-      paper: '#b1afaf',
+      paper: '#796162',
+      default: '#eddbdc',
     },
-    warning: {
-      main: '#FDFF94',
+    custom: {
+      icons: {
+        delete: '#FD7179',
+        edit: '#FDFF94',
+        clock: '#000000',
+      },
     },
-    error: {
-      main: '#FD7179',
-    },
-
   },
 });
