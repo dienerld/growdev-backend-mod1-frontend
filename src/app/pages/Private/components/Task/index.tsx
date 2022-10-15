@@ -57,7 +57,6 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
 
   return (
     <>
-
       <Accordion
         className="grid sm:hidden rounded-3xl"
         sx={{ '&.MuiPaper-root::before': { height: '0px' } }}
@@ -88,18 +87,18 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
           <Typography color="text.secondary" className="self-center">{task.title}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Box color="text.secondary" className="flex flex-col gap-2 -mt-4">
-            <Typography className="flex items-center">
+          <Box color="text.secondary" className="flex flex-col gap-2 -mt-2">
+            <Typography className="flex items-center" variant="body1">
               <CalendarMonthIcon className="mr-2" />
               {dayjs(task.date).format('DD/MM/YYYY')}
             </Typography>
-            <Typography className="flex items-center">
+            <Typography className="flex items-center" variant="body1">
               <ClockIcon className="mr-2" />
               {dayjs(task.date).format('HH:mm')}
             </Typography>
 
             <Button
-              className="self-start -ml-1 text-inherit normal-case"
+              className="self-start -ml-2 -mt-1 text-inherit normal-case"
               sx={{ transform: 'none' }}
               onClick={handleToggleVisibility}
             >
@@ -112,7 +111,9 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
                   className="mr-2"
                 />
               )}
-              {task.hidden ? 'Hidden' : 'Visible'}
+              <Typography variant="body1">
+                {task.hidden ? 'Hidden' : 'Visible'}
+              </Typography>
             </Button>
 
             <Box className="self-end flex gap-4">
