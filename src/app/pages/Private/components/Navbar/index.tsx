@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import {
   AppBar, Box, Container, IconButton, Menu, Divider,
-  MenuItem, Toolbar, Typography, Avatar, Switch,
+  MenuItem, Toolbar, Typography, Avatar, Switch, useTheme,
 } from '@mui/material';
 import {
   Adb as AdbIcon,
@@ -24,6 +24,7 @@ type HeaderProps = {
 export const Navbar = ({ settings }: HeaderProps) => {
   const redirect = useNavigate();
   const dispatch = useAppDispatch();
+  const theme = useTheme();
   const themeName = useAppSelector((state: typeReducers) => state.theme) as 'light' | 'dark';
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -92,35 +93,33 @@ export const Navbar = ({ settings }: HeaderProps) => {
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
+
             >
-              <MenuItem className="flex">
-                <Typography textAlign="center" className="mr-4">
+              <MenuItem className="flex" color="text.secondary">
+                <Typography textAlign="center" className="mr-4" color="text.secondary">
                   Theme
                 </Typography>
-                <LightModeIcon
-                  className="text-sm"
-                />
 
-                <Switch
-                  size="small"
-                  onClick={handleChangeTheme}
-                  checked={themeName === 'dark'}
-                />
-                <DarkModeIcon
-                  className="text-sm"
-                />
+                <LightModeIcon sx={{ color: 'text.secondary' }} className="text-sm" />
+                <Switch size="small" onClick={handleChangeTheme} checked={themeName === 'dark'} />
+                <DarkModeIcon sx={{ color: 'text.secondary' }} className="text-sm" />
               </MenuItem>
-              <MenuItem key="profile" onClick={handleCloseUserMenu}>
-                <Link to="/auth/profile">My Profile</Link>
+
+              <MenuItem key="profile" onClick={handleCloseUserMenu} color="text.secondary">
+                <Link to="/auth/profile" style={{ color: theme.palette.text.secondary }}>My Profile</Link>
               </MenuItem>
+
               {settings?.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Link to={setting}>{setting}</Link>
+                  <Link to={setting} style={{ color: theme.palette.text.secondary }}>
+                    {setting}
+                  </Link>
                 </MenuItem>
               ))}
+
               <Divider />
               <MenuItem onClick={handleLogout}>
-                <Typography textAlign="center">Logout</Typography>
+                <Typography textAlign="center" color="text.secondary">Logout</Typography>
               </MenuItem>
             </Menu>
           </Box>
