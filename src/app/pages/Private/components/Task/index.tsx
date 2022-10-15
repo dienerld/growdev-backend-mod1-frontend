@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import {
   Accordion, AccordionDetails, AccordionSummary,
-  Box, Button, Checkbox, FormControlLabel, Typography, useTheme,
+  Box, Button, Checkbox, Fab, FormControlLabel, Modal, TextField, Typography, useTheme,
 } from '@mui/material';
 import {
   CalendarMonthOutlined as CalendarMonthIcon,
@@ -14,11 +14,14 @@ import {
 } from '@mui/icons-material';
 import { shade } from 'polished';
 
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import { taskActions } from '@/app/redux/modules/tasks';
 import { axios } from '@/app/services/axios';
 import { TTask } from '@/@types/app';
+import { CustomDatePicker } from '../NewTask/DatePicker';
+import { CustomTimePicker } from '../NewTask/TimePicker';
 
 type TTaskProps = {
   task: TTask;
@@ -30,6 +33,16 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const headers = { Authorization: `Bearer ${user.token}` };
+
+  const [date, setDate] = useState<Dayjs | null>(dayjs(new Date(task.date)));
+  const [hourStr, minuteStr] = task.hour.split(':');
+  const [hour, setHour] = useState<Dayjs | null>(dayjs(new Date()).set('hour', Number(hourStr)).set('minute', Number(minuteStr)));
+  const [title, setTitle] = useState(task.title);
+
+  const [openModalEdit, setOpenModalEdit] = useState(false);
+  const handleOpenModal = () => setOpenModalEdit(true);
+  const handleClose = () => { setTitle(task.title); setOpenModalEdit(false); };
+
   const handleToggleDone = () => {
     axios.put(`/tasks/${task.id}`, { done: !task.done }, { headers })
       .then(({ data }) => dispatch(taskActions.updateTask({ id: task.id, changes: data })))
@@ -46,6 +59,16 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
       .catch(() => null);
   };
 
+  const handleUpdateTask = async () => {
+    try {
+      const { data } = await axios.put(`/tasks/${task.id}`, { title, date, hour: hour?.format('HH:mm') }, { headers });
+      dispatch(taskActions.updateTask({ id: task.id, changes: data }));
+      handleSetMessage('Task updated');
+      handleOpenSnackbar();
+      handleClose();
+    } catch (error) { /* */ }
+  };
+
   const handleToggleVisibility = () => {
     axios.put(`/tasks/${task.id}`, { hidden: !task.hidden }, { headers })
       .then(({ data }) => {
@@ -55,8 +78,20 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
       })
       .catch(() => null);
   };
-
   const isDark = () => theme.palette.mode === 'dark';
+
+  const modalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: 'background.paper',
+    width: 400,
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 3,
+  };
+
   return (
     <>
       <Accordion
@@ -136,6 +171,7 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
                   sx={{
                     color: 'custom.icons.edit',
                   }}
+                  onClick={handleOpenModal}
                 />
                 Edit
               </Button>
@@ -192,7 +228,7 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
         </Typography>
 
         <Typography className="hidden sm:flex col-span-2 items-center justify-center" variant="body2">
-          <ClockIcon className="mr-2" />
+          <ClockIcon className="mx-2" />
           {task.hour}
         </Typography>
 
@@ -214,6 +250,7 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
             fontSize="small"
             className="cursor-pointer"
             sx={{ color: 'custom.icons.edit' }}
+            onClick={handleOpenModal}
           />
           <DeleteIcon
             fontSize="small"
@@ -223,6 +260,76 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
           />
         </Typography>
       </Box>
+
+      <Modal
+        open={openModalEdit}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={modalStyle}
+          className="flex flex-col justify-center items-center rounded-[40px] w-10/12 sm:w-6/12 sm:min-w-[500px] lg:w-5/12 lg:max-w-[800px] "
+          color="text.secondary"
+        >
+          <Box
+            component="form"
+            autoComplete="off"
+            className="flex flex-col justify-center items-center w-full h-full"
+          >
+            <Typography id="modal-modal-title" variant="h4" component="h4">
+              Edit Task
+            </Typography>
+
+            <Box className="flex flex-col flex-1 justify-center content-center items-center w-10/12 md:w-8/12 min-w-[180px] mt-4 gap-4">
+              <Box className="flex flex-col flex-1 items-center w-full">
+                <Typography variant="h5" component="h5">
+                  Title
+                </Typography>
+                <TextField
+                  value={title}
+                  className="w-full"
+                  onChange={(e) => setTitle(e.target.value)}
+                  InputProps={{
+                    className: 'rounded-full bg-white h-10 text-black',
+                    sx: { '& input:focus': { boxShadow: 0 } },
+                  }}
+                />
+              </Box>
+
+              <Box className="flex flex-col flex-1 items-center">
+                <Typography variant="h5" component="h5">
+                  Date
+                </Typography>
+                <CustomDatePicker setValue={setDate} value={date} />
+              </Box>
+
+              <Box className="flex flex-col flex-1 items-center">
+                <Typography variant="h5" component="h5">
+                  Hour
+                </Typography>
+                <CustomTimePicker setValue={setHour} value={hour} />
+              </Box>
+            </Box>
+          </Box>
+
+          <Box className="flex flex-col flex-1 content-center items-end w-full mt-8 -mb-2 -mr-2">
+            <Fab
+              color="primary"
+              variant="extended"
+              aria-label="add"
+              onClick={handleUpdateTask}
+              sx={{
+                backgroundColor: 'background.default',
+                color: 'text.primary',
+                '&:hover': { backgroundColor: shade(-0.2, theme.palette.background.default) },
+              }}
+            >
+              <Typography variant="body1" className="normal-case">Update</Typography>
+            </Fab>
+          </Box>
+        </Box>
+      </Modal>
 
     </>
 
