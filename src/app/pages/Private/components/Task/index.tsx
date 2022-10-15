@@ -320,6 +320,7 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
               aria-label="add"
               onClick={handleUpdateTask}
               sx={{
+                height: 40,
                 backgroundColor: 'background.default',
                 color: 'text.primary',
                 '&:hover': { backgroundColor: shade(-0.2, theme.palette.background.default) },
@@ -330,8 +331,6 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
           </Box>
         </Box>
       </Modal>
-
     </>
-
   );
 }

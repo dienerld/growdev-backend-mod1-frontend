@@ -123,12 +123,13 @@ export function NewTask() {
               onClick={handleSaveTask}
               disabled={title === '' || title.length > 30}
               sx={{
+                height: 40,
                 backgroundColor: 'background.default',
                 color: 'text.primary',
                 '&:hover': { backgroundColor: shade(-0.2, theme.palette.background.default) },
               }}
             >
-              <Typography variant="body1" className="mr-2">Add{'  '}</Typography>
+              <Typography variant="body1" className="mr-2 normal-case">Add</Typography>
               <AddCircleOutlineIcon />
             </Fab>
           </Box>
@@ -140,13 +141,14 @@ export function NewTask() {
           aria-label="like"
           variant="extended"
           sx={{
+            height: 44,
             backgroundColor: 'background.paper',
             color: 'text.secondary',
             '&:hover': { backgroundColor: setShade() },
           }}
           onClick={handleOpen}
         >
-          <Typography sx={{ mr: 1 }}>New Task</Typography>
+          <Typography sx={{ mr: 1 }} className="normal-case">New Task</Typography>
           <AddCircleOutlineIcon />
         </Fab>
       </Box>
