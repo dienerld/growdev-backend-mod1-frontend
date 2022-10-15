@@ -131,7 +131,7 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
             </Typography>
             <Typography className="flex items-center" variant="body1">
               <ClockIcon className="mr-2" />
-              {dayjs(task.date).format('HH:mm')}
+              {task.hour}
             </Typography>
 
             <Button
@@ -157,6 +157,7 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
               <Button
                 className="flex items-center rounded-full text-inherit normal-case"
                 variant="outlined"
+                onClick={handleOpenModal}
                 sx={{
                   backgroundColor: shade(0.05, theme.palette.background.default),
                   '&:hover': {
@@ -171,13 +172,13 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
                   sx={{
                     color: 'custom.icons.edit',
                   }}
-                  onClick={handleOpenModal}
                 />
                 Edit
               </Button>
               <Button
                 className="flex items-center rounded-full text-inherit normal-case"
                 variant="outlined"
+                onClick={handleDeleteTask}
                 sx={{
                   backgroundColor: shade(0.05, theme.palette.background.default),
                   '&:hover': {
@@ -189,7 +190,6 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
               >
                 <DeleteIcon
                   className="mr-2 cursor-pointer"
-                  onClick={handleDeleteTask}
                   sx={{
                     color: 'custom.icons.delete',
                   }}
