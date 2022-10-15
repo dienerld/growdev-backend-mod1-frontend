@@ -32,7 +32,7 @@ export function NewTask() {
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => { setTitle(''); setOpen(false); };
 
   const modalStyle = {
     position: 'absolute',
@@ -121,13 +121,11 @@ export function NewTask() {
               variant="extended"
               aria-label="add"
               onClick={handleSaveTask}
-              disabled={title === ''}
+              disabled={title === '' || title.length > 30}
               sx={{
                 backgroundColor: 'background.default',
                 color: 'text.primary',
-                '&:hover': {
-                  backgroundColor: shade(0.2, theme.palette.background.default),
-                },
+                '&:hover': { backgroundColor: shade(-0.2, theme.palette.background.default) },
               }}
             >
               <Typography variant="body1" className="mr-2">Add{'  '}</Typography>
