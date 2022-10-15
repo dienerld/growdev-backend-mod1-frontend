@@ -17,13 +17,12 @@ export function CustomDatePicker({ setValue, value }:DatePickerProps) {
         inputFormat="DD/MM/YYYY"
         value={value}
         onChange={setValue}
-        className=" bg-white focus:shadow-none rounded-full"
         renderInput={(params) => (
           <TextField
             {...params}
             InputProps={{
               ...params.InputProps,
-              className: 'rounded-full h-10',
+              className: 'rounded-full h-10 bg-white text-black',
               sx: { '& input:focus': { boxShadow: 0 } },
             }}
           />

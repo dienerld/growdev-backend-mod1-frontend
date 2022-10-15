@@ -93,7 +93,7 @@ export function NewTask() {
                   onChange={(e) => setTitle(e.target.value)}
                   className="w-full"
                   InputProps={{
-                    className: 'rounded-full bg-white h-10',
+                    className: 'rounded-full bg-white h-10 text-black',
                     sx: { '& input:focus': { boxShadow: 0 } },
                   }}
                 />
