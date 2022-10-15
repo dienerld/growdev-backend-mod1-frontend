@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import {
   Accordion, AccordionDetails, AccordionSummary,
-  Box, Button, Checkbox, FormControlLabel, Typography,
+  Box, Button, Checkbox, FormControlLabel, Typography, useTheme,
 } from '@mui/material';
 import {
   CalendarMonthOutlined as CalendarMonthIcon,
@@ -12,6 +12,7 @@ import {
   VisibilityOffOutlined as VisibilityOffIcon,
   ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
+import { shade } from 'polished';
 
 import dayjs from 'dayjs';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
@@ -27,7 +28,7 @@ type TTaskProps = {
 export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps) {
   const user = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
-
+  const theme = useTheme();
   const headers = { Authorization: `Bearer ${user.token}` };
   const handleToggleDone = () => {
     axios.put(`/tasks/${task.id}`, { done: !task.done }, { headers })
@@ -55,6 +56,7 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
       .catch(() => null);
   };
 
+  const isDark = () => theme.palette.mode === 'dark';
   return (
     <>
       <Accordion
@@ -116,21 +118,46 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
               </Typography>
             </Button>
 
-            <Box className="self-end flex gap-4">
+            <Box className="self-end flex gap-4" color={isDark() ? 'text.secondary' : 'text.primary'}>
               <Button
-                className="flex items-center rounded-full normal-case"
+                className="flex items-center rounded-full text-inherit normal-case"
                 variant="outlined"
-                sx={{ backgroundColor: 'background.default' }}
+                sx={{
+                  backgroundColor: shade(0.05, theme.palette.background.default),
+                  '&:hover': {
+                    backgroundColor: isDark()
+                      ? shade(-0.5, theme.palette.background.default)
+                      : shade(0.2, theme.palette.background.default),
+                  },
+                }}
               >
-                <EditIcon className="mr-2 cursor-pointer" />
+                <EditIcon
+                  className="mr-2 cursor-pointer"
+                  sx={{
+                    color: 'custom.icons.edit',
+                  }}
+                />
                 Edit
               </Button>
               <Button
-                className="flex items-center rounded-full normal-case"
+                className="flex items-center rounded-full text-inherit normal-case"
                 variant="outlined"
-                sx={{ backgroundColor: 'background.default' }}
+                sx={{
+                  backgroundColor: shade(0.05, theme.palette.background.default),
+                  '&:hover': {
+                    backgroundColor: isDark()
+                      ? shade(-0.5, theme.palette.background.default)
+                      : shade(0.2, theme.palette.background.default),
+                  },
+                }}
               >
-                <DeleteIcon className="mr-2 cursor-pointer" onClick={handleDeleteTask} />
+                <DeleteIcon
+                  className="mr-2 cursor-pointer"
+                  onClick={handleDeleteTask}
+                  sx={{
+                    color: 'custom.icons.delete',
+                  }}
+                />
                 Delete
               </Button>
 
@@ -141,7 +168,7 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
 
       <Box
         className="hidden sm:grid grid-cols-12 rounded-3xl p-4"
-        sx={{ backgroundColor: 'background.paper', color: 'text.secondary' }}
+        sx={{ color: 'text.secondary', backgroundColor: 'background.paper' }}
       >
 
         <Box className="col-span-5 flex items-center">

@@ -7,7 +7,6 @@ declare module '@mui/material/styles' {
       icons: {
         delete: string;
         edit: string;
-        clock: string
       }
     }
   }
@@ -18,7 +17,6 @@ declare module '@mui/material/styles' {
         icons: {
           delete: string;
           edit: string;
-          clock: string
         }
       }
     }

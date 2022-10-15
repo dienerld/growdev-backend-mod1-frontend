@@ -8,7 +8,7 @@ export const lightTheme = createTheme({
       secondary: '#EDDBDC',
     },
     primary: {
-      main: '#262021',
+      main: '#796162',
     },
     secondary: {
       main: '#EDDBDC',
@@ -21,7 +21,6 @@ export const lightTheme = createTheme({
       icons: {
         delete: '#FD7179',
         edit: '#FDFF94',
-        clock: '#000000',
       },
     },
   },
