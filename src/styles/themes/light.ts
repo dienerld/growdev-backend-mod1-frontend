@@ -10,6 +10,9 @@ export const lightTheme = createTheme({
     primary: {
       main: '#262021',
     },
+    secondary: {
+      main: '#EDDBDC',
+    },
     background: {
       paper: '#796162',
       default: '#eddbdc',
