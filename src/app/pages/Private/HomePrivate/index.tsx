@@ -14,7 +14,11 @@ export function HomePrivate() {
   const [loading, setLoading] = useState(true);
   const tasks = useAppSelector(selectorTasks.selectAll);
   const [stateSnackbar, setStateSnackbar] = useState(false);
-  const handleToggleSnackbar = () => setStateSnackbar(!stateSnackbar);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
+  const handleSetMessage = (message: string) => setSnackbarMessage(message);
+  const handleOpenSnackbar = () => setStateSnackbar(true);
+  const handleCloseSnackbar = () => setStateSnackbar(false);
 
   useEffect(() => {
     setLoading(false);
@@ -25,13 +29,14 @@ export function HomePrivate() {
       {loading && <div>Loading</div>}
       {!loading && tasks.length === 0 && (<NoTask />)}
       {!loading && tasks.length > 0 && (
-        <Box className="flex flex-col gap-4 mx-2 sm:mx-8">
-          {tasks.map((task) => !task.hidden && (
-          <Task
-            key={task.id}
-            task={task}
-            handleToggleSnackbar={handleToggleSnackbar}
-          />
+        <Box className="flex flex-col gap-2 mx-2 sm:mx-8">
+          {tasks.map((task) => (
+            <Task
+              key={task.id}
+              task={task}
+              handleOpenSnackbar={handleOpenSnackbar}
+              handleSetMessage={handleSetMessage}
+            />
           ))}
         </Box>
       )}
@@ -41,16 +46,16 @@ export function HomePrivate() {
 
       <Snackbar
         open={stateSnackbar}
-        autoHideDuration={6000}
-        onClose={handleToggleSnackbar}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'center',
         }}
         sx={{ mt: 6 }}
       >
-        <Alert onClose={handleToggleSnackbar} severity="success" sx={{ width: '100%' }}>
-          This is a success message!
+        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+          {snackbarMessage}
         </Alert>
       </Snackbar>
     </Box>

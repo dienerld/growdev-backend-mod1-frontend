@@ -1,7 +1,7 @@
+/* eslint-disable no-unused-vars */
 import {
-  Box, Checkbox,
-  Typography,
-  useTheme,
+  Accordion, AccordionDetails, AccordionSummary,
+  Box, Button, Checkbox, FormControlLabel, Typography,
 } from '@mui/material';
 import {
   CalendarMonthOutlined as CalendarMonthIcon,
@@ -10,10 +10,10 @@ import {
   QueryBuilderOutlined as ClockIcon,
   VisibilityOutlined as VisibilityIcon,
   VisibilityOffOutlined as VisibilityOffIcon,
+  ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
 
 import dayjs from 'dayjs';
-import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import { taskActions } from '@/app/redux/modules/tasks';
 import { axios } from '@/app/services/axios';
@@ -21,71 +21,146 @@ import { TTask } from '@/@types/app';
 
 type TTaskProps = {
   task: TTask;
-  handleToggleSnackbar: () => void;
+  handleOpenSnackbar: () => void;
+  handleSetMessage: (message: string) => void;
 };
-export function Task({ task, handleToggleSnackbar }: TTaskProps) {
+export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps) {
   const user = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
-  const theme = useTheme();
 
+  const headers = { Authorization: `Bearer ${user.token}` };
   const handleToggleDone = () => {
-    axios.put(`/tasks/${task.id}`, { done: !task.done }, { headers: { Authorization: `Bearer ${user.token}` } })
-      .then(({ data }) => dispatch(taskActions.updateTask(
-        { id: task.id, changes: data },
-      )))
+    axios.put(`/tasks/${task.id}`, { done: !task.done }, { headers })
+      .then(({ data }) => dispatch(taskActions.updateTask({ id: task.id, changes: data })))
       .catch(() => null);
   };
 
   const handleDeleteTask = () => {
-    axios.delete(`/tasks/${task.id}`, { headers: { Authorization: `Bearer ${user.token}` } })
+    axios.delete(`/tasks/${task.id}`, { headers })
       .then(() => {
-        handleToggleSnackbar();
+        handleSetMessage('Task deleted');
+        handleOpenSnackbar();
         dispatch(taskActions.removeTask(task.id));
       })
       .catch(() => null);
   };
 
   const handleToggleVisibility = () => {
-    axios.put(`/tasks/${task.id}`, { hidden: !task.hidden }, { headers: { Authorization: `Bearer ${user.token}` } })
-      .then(({ data }) => dispatch(taskActions.updateTask(
-        { id: task.id, changes: data },
-      )))
+    axios.put(`/tasks/${task.id}`, { hidden: !task.hidden }, { headers })
+      .then(({ data }) => {
+        dispatch(taskActions.updateTask({ id: task.id, changes: data }));
+        handleSetMessage('Task visibility changed');
+        handleOpenSnackbar();
+      })
       .catch(() => null);
   };
 
-  useEffect(() => {
-    console.log(window.screen.width);
-  });
   return (
     <>
-      <div />
-      {/* TODO mudar para accordion */}
-      {window.screen.width >= 600 && (
+
+      <Accordion
+        className="grid sm:hidden rounded-3xl"
+        sx={{ '&.MuiPaper-root::before': { height: '0px' } }}
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-label="Expand"
+          aria-controls="additional-actions1-content"
+          id="additional-actions1-header"
+          sx={{ border: 0 }}
+          className="flex items-center"
+        >
+          <FormControlLabel
+            aria-label="Acknowledge"
+            onClick={(event) => event.stopPropagation()}
+            onFocus={(event) => event.stopPropagation()}
+            className="mr-0 -ml-2"
+            control={(
+              <Checkbox
+                size="small"
+                checked={task.done}
+                onChange={handleToggleDone}
+                color="secondary"
+              />
+            )}
+            label=""
+          />
+          <Typography color="text.secondary" className="self-center">{task.title}</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Box color="text.secondary" className="flex flex-col gap-2 -mt-4">
+            <Typography className="flex items-center">
+              <CalendarMonthIcon className="mr-2" />
+              {dayjs(task.date).format('DD/MM/YYYY')}
+            </Typography>
+            <Typography className="flex items-center">
+              <ClockIcon className="mr-2" />
+              {dayjs(task.date).format('HH:mm')}
+            </Typography>
+
+            <Button
+              className="self-start -ml-1 text-inherit normal-case"
+              sx={{ transform: 'none' }}
+              onClick={handleToggleVisibility}
+            >
+              {task.hidden ? (
+                <VisibilityOffIcon
+                  className="mr-2"
+                />
+              ) : (
+                <VisibilityIcon
+                  className="mr-2"
+                />
+              )}
+              {task.hidden ? 'Hidden' : 'Visible'}
+            </Button>
+
+            <Box className="self-end flex gap-4">
+              <Button
+                className="flex items-center rounded-full normal-case"
+                variant="outlined"
+                sx={{ backgroundColor: 'background.default' }}
+              >
+                <EditIcon className="mr-2 cursor-pointer" />
+                Edit
+              </Button>
+              <Button
+                className="flex items-center rounded-full normal-case"
+                variant="outlined"
+                sx={{ backgroundColor: 'background.default' }}
+              >
+                <DeleteIcon className="mr-2 cursor-pointer" onClick={handleDeleteTask} />
+                Delete
+              </Button>
+
+            </Box>
+          </Box>
+        </AccordionDetails>
+      </Accordion>
+
       <Box
-        className="grid grid-cols-12 rounded-3xl p-4"
-        sx={{
-          backgroundColor: 'background.paper',
-          color: 'text.primary',
-        }}
+        className="hidden sm:grid grid-cols-12 rounded-3xl p-4"
+        sx={{ backgroundColor: 'background.paper', color: 'text.secondary' }}
       >
 
         <Box className="col-span-5 flex items-center">
           <Checkbox
-            inputProps={{ 'aria-label': 'controlled' }}
             size="small"
             checked={task.done}
             onChange={handleToggleDone}
+            color="secondary"
           />
           <Typography className="ml-1">
             {task.title}
           </Typography>
         </Box>
 
-        <Typography className="hidden sm:flex col-span-3 items-center justify-center" variant="body2">
-          <>
-            <CalendarMonthIcon className="mr-2" />
-            {dayjs(task.date).format('DD/MM/YYYY')}
-          </>
+        <Typography
+          className="hidden sm:flex col-span-3 items-center justify-center"
+          variant="body2"
+        >
+          <CalendarMonthIcon className="mr-2" />
+          {dayjs(task.date).format('DD/MM/YYYY')}
         </Typography>
 
         <Typography className="hidden sm:flex col-span-2 items-center justify-center" variant="body2">
@@ -94,7 +169,7 @@ export function Task({ task, handleToggleSnackbar }: TTaskProps) {
         </Typography>
 
         <Typography className="hidden sm:flex col-span-2 items-center justify-end gap-4">
-          { task.hidden ? (
+          { !task.hidden ? (
             <VisibilityIcon
               fontSize="small"
               className="cursor-pointer"
@@ -119,10 +194,8 @@ export function Task({ task, handleToggleSnackbar }: TTaskProps) {
             onClick={handleDeleteTask}
           />
         </Typography>
-
       </Box>
 
-      )}
     </>
 
   );
