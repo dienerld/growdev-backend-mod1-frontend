@@ -171,7 +171,7 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
         sx={{ color: 'text.secondary', backgroundColor: 'background.paper' }}
       >
 
-        <Box className="col-span-5 flex items-center">
+        <Box className="col-span-6 flex items-center">
           <Checkbox
             size="small"
             checked={task.done}
@@ -184,7 +184,7 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
         </Box>
 
         <Typography
-          className="hidden sm:flex col-span-3 items-center justify-center"
+          className="hidden sm:flex col-span-2 items-center justify-center"
           variant="body2"
         >
           <CalendarMonthIcon className="mr-2" />
@@ -196,7 +196,7 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
           {task.hour}
         </Typography>
 
-        <Typography className="hidden sm:flex col-span-2 items-center justify-end gap-4">
+        <Typography className="hidden sm:flex col-span-2 items-center justify-end gap-3">
           { !task.hidden ? (
             <VisibilityIcon
               fontSize="small"
