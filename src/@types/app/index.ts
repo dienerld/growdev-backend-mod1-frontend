@@ -7,6 +7,8 @@ export type TTask = {
   hidden: boolean;
 }
 
+export type ResponseTasks = TTask[];
+
 export type ResponseUser = {
   id: string;
   email: string;
