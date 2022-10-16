@@ -210,6 +210,7 @@ export function Profile() {
                           onClick={handleClickShowPassword}
                           onMouseDown={handleMouseDownPassword}
                           edge="end"
+                          sx={{ color: 'primary.light' }}
                         >
                           {
                             showPassword
@@ -244,6 +245,7 @@ export function Profile() {
                           onClick={handleClickShowPasswordConfirm}
                           onMouseDown={handleMouseDownPasswordConfirm}
                           edge="end"
+                          sx={{ color: 'primary.light' }}
                         >
                           {
                           showPasswordConfirm
