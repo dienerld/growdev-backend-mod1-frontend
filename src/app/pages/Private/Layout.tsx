@@ -6,7 +6,7 @@ import { isLogged, userActions } from '@redux/modules/user';
 import { selectorTasks, taskActions } from '@/app/redux/modules/tasks';
 
 import { axios } from '@/app/services/axios';
-import { ResponseUser } from '@/@types/app';
+import { ResponseTasks } from '@/@types/app';
 
 import { Navbar } from './components/Navbar';
 
@@ -19,16 +19,16 @@ export function Private() {
   useEffect(() => {
     if (user.remember) {
       dispatch(userActions.login(user));
-    } else {
-      dispatch(isLogged())
-        .then((res) => !res.payload && redirect('/'))
-        .catch(() => redirect('/'));
+      if (!user.token) redirect('/');
     }
+    dispatch(isLogged())
+      .then((res) => !res.payload && redirect('/'))
+      .catch(() => redirect('/'));
 
     if (totalTasks === 0) {
       const headers = { Authorization: `Bearer ${user.token}` };
-      axios.get<ResponseUser>('/users', { headers })
-        .then(({ data }) => dispatch(taskActions.addManyTasks(data.tasks)))
+      axios.get<ResponseTasks>('/tasks', { headers })
+        .then(({ data }) => dispatch(taskActions.addManyTasks(data)))
         .catch(() => redirect('/'));
     }
   }, []);
