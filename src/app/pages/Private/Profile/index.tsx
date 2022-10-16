@@ -53,14 +53,14 @@ export function Profile() {
         </Typography>
         <CloseOutlinedIcon />
       </Box>
-      <Paper
-        className="rounded-3xl w-11/12 sm:w-5/6 md:w-3/4 lg:w-1/2 xl:w-2/5 p-4"
-      >
+
+      {/* Form */}
+      <Paper className="rounded-3xl w-11/12 sm:w-5/6 md:w-3/4 lg:w-1/2 xl:w-2/5 p-4">
         <Box
           component="form"
           noValidate
           autoComplete="off"
-          className="flex flex-col items-center justify-center p-10 gap-4"
+          className="flex flex-col items-center justify-center px-8 gap-4 mb-8"
         >
           {/* Name */}
           <Box className="w-full">
