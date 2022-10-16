@@ -1,8 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useState } from 'react';
 import {
-  Box, Fab, Modal,
-  TextField,
+  Box, Fab, Modal, TextField,
   Typography, useTheme,
 } from '@mui/material';
 import { AddCircleOutline as AddCircleOutlineIcon } from '@mui/icons-material';
@@ -136,7 +135,7 @@ export function NewTask() {
         </Box>
       </Modal>
 
-      <Box className="absolute right-6 bottom-6">
+      <Box className="fixed right-6 bottom-10">
         <Fab
           aria-label="like"
           variant="extended"
