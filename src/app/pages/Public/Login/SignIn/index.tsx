@@ -85,16 +85,16 @@ export function SignIn({ handleFlip }: SignInProps) {
             <Typography className="mt-6 text-center text-3xl font-bold tracking-tight text-inherit">
               Sign in to your account
             </Typography>
-            <p className="mt-2 text-center text-sm">
+            <Typography variant="body1" className="mt-2 text-center text-sm">
               Or{' '}
               <button
-                className="font-medium text-indigo-600 hover:text-indigo-500"
+                className="font-medium text-indigo-800 hover:text-indigo-700"
                 onClick={handleFlip}
                 type="button"
               >
                 create account
               </button>
-            </p>
+            </Typography>
           </div>
           <Box
             component="form"
@@ -115,7 +115,7 @@ export function SignIn({ handleFlip }: SignInProps) {
                 error={!emailIsValid}
                 helperText={emailIsValid ? '' : 'Please enter a valid email'}
                 InputProps={{
-                  className: 'rounded-t-md border-gray-300 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm text-inherit',
+                  className: 'rounded-t-md sm:text-sm text-inherit border-inherit',
                   sx: {
                     '& input:focus': { boxShadow: 0 },
                   },

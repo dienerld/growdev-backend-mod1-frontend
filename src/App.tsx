@@ -21,7 +21,7 @@ export function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <div className={nameTheme}>
+      <div className={`${nameTheme} h-full`}>
         <Routes>
           <Route path="/auth" element={<Private />}>
             <Route index element={<HomePrivate />} />

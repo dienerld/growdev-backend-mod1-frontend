@@ -24,12 +24,10 @@ export const Navbar = () => {
 
   return (
     <AppBar
-      position="static"
-      className="bg-[#262021]   shadow-none "
+      position="relative"
+      className="shadow-none"
     >
-      <Container
-        maxWidth={false}
-      >
+      <Container maxWidth={false}>
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', sm: 'flex' }, mr: 1 }} />
           <Typography

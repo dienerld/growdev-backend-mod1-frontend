@@ -12,8 +12,7 @@ export function Login() {
   };
 
   return (
-    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 h-screen min-h-full px-4 sm:px-6 lg:px-8">
-
+    <div className="flex items-center px-4 mt-10">
       <Box className="flex flex-1 justify-center content-center items-center">
 
         <ReactCardFlip
@@ -26,10 +25,6 @@ export function Login() {
 
           <SignUp handleFlip={handleFlip} />
         </ReactCardFlip>
-      </Box>
-
-      <Box className="hidden lg:flex flex-1 justify-center content-center items-center">
-        Dienerr
       </Box>
     </div>
   );

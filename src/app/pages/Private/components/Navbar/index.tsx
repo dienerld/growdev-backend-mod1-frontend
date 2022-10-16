@@ -51,7 +51,7 @@ export const Navbar = ({ settings }: HeaderProps) => {
   const { name } = useAppSelector((state: typeReducers) => state.user);
   return (
     <AppBar
-      position="static"
+      position="relative"
       className="shadow-none"
     >
       <Container

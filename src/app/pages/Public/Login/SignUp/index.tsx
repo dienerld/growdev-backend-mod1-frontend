@@ -123,10 +123,10 @@ export function SignUp({ handleFlip }: SignUpProps) {
             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight ">
               Sign up to your account
             </h2>
-            <p className="mt-2 text-center text-sm text-gray-600">
+            <p className="mt-2 text-center text-sm">
               Or{' '}
               <button
-                className="font-medium text-indigo-600 hover:text-indigo-500"
+                className="font-medium text-indigo-700 hover:text-indigo-600"
                 onClick={handleFlip}
                 type="button"
               >
@@ -138,7 +138,7 @@ export function SignUp({ handleFlip }: SignUpProps) {
             severity={error.status as AlertColor}
             sx={{
               color: 'text.primary',
-              display: hasError ? 'flex' : 'flex',
+              display: hasError ? 'flex' : 'none',
             }}
           >{error.message || 'Internal Server error'}
           </Alert>
