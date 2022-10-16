@@ -3,10 +3,13 @@ import validator from 'validator';
 
 import { LockClosedIcon, LockOpenIcon } from '@heroicons/react/20/solid';
 import {
-  Alert,
-  AlertColor,
-  Box, Button, Paper, TextField,
+  Alert, AlertColor,
+  Box, Button, IconButton, InputAdornment, Paper, TextField,
 } from '@mui/material';
+import {
+  Visibility as VisibilityOutlinedIcon,
+  VisibilityOff as VisibilityOffOutlinedIcon,
+} from '@mui/icons-material';
 import { axios } from '@/app/services/axios';
 
 type SignUpProps = {
@@ -29,6 +32,14 @@ export function SignUp({ handleFlip }: SignUpProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [error, setError] = useState({ status: 'success', message: '' });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
+
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const handleClickShowPasswordConfirm = () => setShowPasswordConfirm(!showPasswordConfirm);
+  const handleMouseDownPasswordConfirm = () => setShowPasswordConfirm(!showPasswordConfirm);
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value.replace(/\s{1,}/, '');
@@ -184,7 +195,7 @@ export function SignUp({ handleFlip }: SignUpProps) {
               <TextField
                 id="password-register"
                 label="Password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={handlePasswordChange}
                 error={!passwordIsValid}
@@ -193,13 +204,25 @@ export function SignUp({ handleFlip }: SignUpProps) {
                 className="mb-4"
                 InputProps={{
                   className: 'rounded-md border-gray-300 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm',
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
                 }}
               />
 
               <TextField
                 id="password-repeat"
                 label="Password Confirmation"
-                type="password"
+                type={showPasswordConfirm ? 'text' : 'password'}
                 value={passwordConfirmation}
                 onChange={handlePasswordConfirmationChange}
                 error={!passwordConfirmationIsValid}
@@ -208,6 +231,22 @@ export function SignUp({ handleFlip }: SignUpProps) {
                 className="mb-4"
                 InputProps={{
                   className: 'rounded-md border-gray-300 placeholder-gray-500 focus:z-10 sm:text-sm',
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPasswordConfirm}
+                        onMouseDown={handleMouseDownPasswordConfirm}
+                        edge="end"
+                      >
+                        {
+                          showPasswordConfirm
+                            ? <VisibilityOutlinedIcon />
+                            : <VisibilityOffOutlinedIcon />
+                        }
+                      </IconButton>
+                    </InputAdornment>
+                  ),
                 }}
               />
 
