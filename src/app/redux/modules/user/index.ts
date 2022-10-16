@@ -14,9 +14,9 @@ type TAction = {
 }
 
 const initialState = {
-  name: undefined,
-  email: undefined,
-  token: undefined,
+  name: '',
+  email: '',
+  token: '',
   remember: false,
 };
 
@@ -58,7 +58,6 @@ const slice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    // @ts-expect-error
     login: (_, action: PayloadAction<TAction>) => {
       sessionStorage.setItem(`persist:${keySession}`, JSON.stringify(action.payload));
       const decoded = jwtDecode<TJwtDecode>(action.payload.token);
@@ -72,6 +71,11 @@ const slice = createSlice({
         name: decoded.name,
         email: decoded.email,
       };
+    },
+    updateUser: (state, action: PayloadAction<TAction>) => {
+      state.name = action.payload.user.name;
+      state.email = action.payload.user.email;
+      return state;
     },
     logout: () => {
       sessionStorage.removeItem(`persist:${keySession}`);
