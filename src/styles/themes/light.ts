@@ -17,6 +17,12 @@ export const lightTheme = createTheme({
       paper: '#796162',
       default: '#eddbdc',
     },
+    error: {
+      main: '#6d0000',
+    },
+    warning: {
+      main: '#a69001',
+    },
     custom: {
       icons: {
         delete: '#FD7179',
