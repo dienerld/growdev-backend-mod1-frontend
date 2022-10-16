@@ -1,19 +1,33 @@
+import { ChangeEvent, useEffect, useState } from 'react';
+import validator from 'validator';
+import { shade } from 'polished';
+
 import {
-  Box, Button, IconButton, InputAdornment, Paper, TextField, Typography, useTheme,
+  Alert,
+  AlertColor,
+  Box, Button, IconButton, InputAdornment,
+  Paper, Snackbar, TextField, Typography, useTheme,
 } from '@mui/material';
 import {
   CloseRounded as CloseOutlinedIcon,
   Visibility as VisibilityOutlinedIcon,
   VisibilityOff as VisibilityOffOutlinedIcon,
 } from '@mui/icons-material';
-import validator from 'validator';
-import { ChangeEvent, useState } from 'react';
-import { shade } from 'polished';
-import { useAppSelector } from '@/app/redux/hooks';
+
+import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
+import { axios } from '@/app/services/axios';
+import { userActions } from '@/app/redux/modules/user';
 
 export function Profile() {
   const user = useAppSelector((state) => state.user);
   const theme = useTheme();
+  const dispatch = useAppDispatch();
+
+  const [newName, setNewName] = useState<string>(user.name!);
+  const [newEmail, setNewEmail] = useState<string>(user.email!);
+
+  const [nameIsValid, setNameIsValid] = useState(true);
+  const [emailIsValid, setEmailIsValid] = useState(true);
 
   const [password, setPassword] = useState('');
   const [passwordIsValid, setPasswordIsValid] = useState(true);
@@ -29,13 +43,24 @@ export function Profile() {
   const handleClickShowPasswordConfirm = () => setShowPasswordConfirm(!showPasswordConfirm);
   const handleMouseDownPasswordConfirm = () => setShowPasswordConfirm(!showPasswordConfirm);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState({ status: 'success', message: '' });
+
+  const [stateSnackbar, setStateSnackbar] = useState(false);
+  const handleOpenSnackbar = () => setStateSnackbar(true);
+  const handleCloseSnackbar = () => setStateSnackbar(false);
+
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
 
-    validator.isStrongPassword(event.target.value, { returnScore: true })
-    >= 30 && event.target.value.length >= 5
-      ? setPasswordIsValid(true)
-      : setPasswordIsValid(false);
+    if (event.target.value.length < 1) {
+      setPasswordIsValid(true);
+    } else {
+      validator.isStrongPassword(event.target.value, { returnScore: true })
+      >= 30 && event.target.value.length >= 5
+        ? setPasswordIsValid(true)
+        : setPasswordIsValid(false);
+    }
   };
 
   const handlePasswordConfirmationChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -45,9 +70,72 @@ export function Profile() {
       ? setPasswordConfirmationIsValid(true)
       : setPasswordConfirmationIsValid(false);
   };
+
+  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value.replace(/\s{1,}/, ' ');
+    setNewName(input);
+
+    validator.isAlpha(input, undefined, { ignore: ' ' })
+      ? setNameIsValid(true)
+      : setNameIsValid(false);
+  };
+
+  const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setNewEmail(event.target.value);
+
+    validator.isEmail(event.target.value)
+      ? setEmailIsValid(true)
+      : setEmailIsValid(false);
+  };
+
+  const handleSubmit = () => {
+    (async () => {
+      try {
+        const headers = { Authorization: `Bearer ${user.token}` };
+        const response = await axios.put('/users', {
+          name: newName,
+          email: newEmail,
+          password,
+          password_confirm: passwordConfirmation,
+        }, { headers });
+
+        if (response.status === 200) {
+          dispatch(userActions.updateUser({ ...user, user: { name: newName, email: newEmail } }));
+          setFeedback({ status: 'success', message: 'Personal data successfully updated!' });
+          handleOpenSnackbar();
+          setIsSubmitting(false);
+        }
+      } catch (err: any) {
+        handleOpenSnackbar();
+        if (err?.response.status === 400) {
+          setFeedback({ message: err?.response?.data?.error || err.message, status: 'warning' });
+        } else {
+          setFeedback({ message: err?.response?.data?.error || err.message, status: 'error' });
+        }
+      }
+    })();
+  };
+
+  useEffect(() => {
+    if (
+      nameIsValid && emailIsValid
+      && ((passwordIsValid && passwordConfirmationIsValid)
+        || (password === '' && passwordConfirmation === ''))
+    ) {
+      setIsSubmitting(true);
+    } else {
+      setIsSubmitting(false);
+    }
+  }, [nameIsValid, emailIsValid, passwordIsValid, passwordConfirmation, newName, newEmail]);
+
+  useEffect(() => {
+    setIsSubmitting(false);
+  }, []);
+
   return (
-    <Box className="flex flex-1 flex-col items-center w-full gap-8">
-      <Box className="flex flex-1 w-full items-center justify-between">
+    <Box className="grid grid-rows-12 gap-10 mt-10">
+
+      <Box className="row-span-2 flex flex-1 justify-center">
         <Typography variant="h4">
           Profile
         </Typography>
@@ -55,126 +143,156 @@ export function Profile() {
       </Box>
 
       {/* Form */}
-      <Paper className="rounded-3xl w-11/12 sm:w-5/6 md:w-3/4 lg:w-1/2 xl:w-2/5 p-4">
-        <Box
-          component="form"
-          noValidate
-          autoComplete="off"
-          className="flex flex-col items-center justify-center px-8 gap-4 mb-8"
-        >
-          {/* Name */}
-          <Box className="w-full">
-            <Typography variant="body1" className="self-start" color="text.secondary">
-              Name
-            </Typography>
-            <TextField
-              value={user.name}
-              className="w-full"
-              InputProps={{
-                className: 'rounded-xl bg-white h-10 text-black',
-                sx: { '& input:focus': { boxShadow: 0 } },
-              }}
-            />
-          </Box>
-
-          {/* Email */}
-          <Box className="w-full">
-            <Typography variant="body1" className="self-start" color="text.secondary">
-              Email
-            </Typography>
-            <TextField
-              value={user.email}
-              className="w-full"
-              InputProps={{
-                className: 'rounded-xl bg-white h-10 text-black',
-                sx: { '& input:focus': { boxShadow: 0 } },
-              }}
-            />
-          </Box>
-
-          {/* Passwords */}
-          <Box className="w-full flex flex-col sm:flex-row gap-x-10 gap-y-4">
+      <Box className="row-span-11 flex flex-col items-center">
+        <Paper className="flex flex-1 flex-col rounded-3xl w-11/12 sm:w-5/6 md:w-3/4 lg:w-1/2 xl:w-2/5 p-4">
+          <Box
+            component="form"
+            noValidate
+            autoComplete="off"
+            className="flex flex-col items-center justify-center px-8 gap-4 mb-8"
+          >
+            {/* Name */}
             <Box className="w-full">
               <Typography variant="body1" className="self-start" color="text.secondary">
-                Password
+                Name
               </Typography>
               <TextField
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={handlePasswordChange}
-                error={!passwordIsValid}
-                helperText={passwordIsValid ? '' : 'Password must be at least 5 characters and contain at least one number, one lowercase and one uppercase letter'}
+                value={newName}
+                onChange={handleNameChange}
                 fullWidth
+                error={!nameIsValid}
+                helperText={nameIsValid ? '' : 'Name must be only letters and spaces'}
                 InputProps={{
                   className: 'rounded-xl bg-white h-10 text-black',
                   sx: { '& input:focus': { boxShadow: 0 } },
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
                 }}
               />
             </Box>
 
+            {/* Email */}
             <Box className="w-full">
               <Typography variant="body1" className="self-start" color="text.secondary">
-                Confirm Password
+                Email
               </Typography>
               <TextField
-                type={showPasswordConfirm ? 'text' : 'password'}
-                value={passwordConfirmation}
-                onChange={handlePasswordConfirmationChange}
-                error={!passwordConfirmationIsValid}
-                helperText={passwordConfirmationIsValid ? '' : 'Passwords must match'}
+                value={newEmail}
+                onChange={handleEmailChange}
                 fullWidth
+                error={!emailIsValid}
+                helperText={emailIsValid ? '' : 'Email must be valid'}
                 InputProps={{
                   className: 'rounded-xl bg-white h-10 text-black',
                   sx: { '& input:focus': { boxShadow: 0 } },
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPasswordConfirm}
-                        onMouseDown={handleMouseDownPasswordConfirm}
-                        edge="end"
-                      >
-                        {
+                }}
+              />
+            </Box>
+
+            {/* Passwords */}
+            <Box className="w-full flex flex-col sm:flex-row gap-x-10 gap-y-4">
+              <Box className="w-full">
+                <Typography variant="body1" className="self-start" color="text.secondary">
+                  Password
+                </Typography>
+                <TextField
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={handlePasswordChange}
+                  error={!passwordIsValid}
+                  helperText={passwordIsValid ? '' : 'Password must be at least 5 characters and contain at least one number, one lowercase and one uppercase letter'}
+                  fullWidth
+                  InputProps={{
+                    className: 'rounded-xl bg-white h-10 text-black',
+                    sx: { '& input:focus': { boxShadow: 0 } },
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {
+                            showPassword
+                              ? <VisibilityOutlinedIcon />
+                              : <VisibilityOffOutlinedIcon />
+                          }
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Box>
+
+              <Box className="w-full">
+                <Typography variant="body1" className="self-start" color="text.secondary">
+                  Confirm Password
+                </Typography>
+                <TextField
+                  type={showPasswordConfirm ? 'text' : 'password'}
+                  value={passwordConfirmation}
+                  onChange={handlePasswordConfirmationChange}
+                  error={!passwordConfirmationIsValid}
+                  helperText={passwordConfirmationIsValid ? '' : 'Passwords must match'}
+                  fullWidth
+                  InputProps={{
+                    className: 'rounded-xl bg-white h-10 text-black',
+                    sx: { '& input:focus': { boxShadow: 0 } },
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPasswordConfirm}
+                          onMouseDown={handleMouseDownPasswordConfirm}
+                          edge="end"
+                        >
+                          {
                           showPasswordConfirm
                             ? <VisibilityOutlinedIcon />
                             : <VisibilityOffOutlinedIcon />
                         }
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Box>
             </Box>
           </Box>
-        </Box>
-        {/* Button */}
-        <Box className="flex flex-1 items-center justify-center">
-          <Button
-            variant="contained"
-            className="rounded-xl w-1/2 h-10 normal-case"
-            sx={{
-              backgroundColor: 'background.default',
-              color: 'text.primary',
-              '&:hover': { backgroundColor: shade(-0.2, theme.palette.background.default) },
-            }}
-          >
-            Save
-          </Button>
+          {/* Button */}
+          <Box className="flex flex-1 items-center justify-center">
+            <Button
+              variant="contained"
+              className="rounded-xl w-1/2 h-10 normal-case"
+              onClick={handleSubmit}
+              disabled={!isSubmitting}
+              sx={{
+                backgroundColor: 'background.default',
+                color: 'text.primary',
+                '&:hover': { backgroundColor: shade(-0.2, theme.palette.background.default) },
+              }}
+            >
+              Save
+            </Button>
 
-        </Box>
-      </Paper>
+          </Box>
+        </Paper>
+      </Box>
+      {/* SnackBar */}
+      <Snackbar
+        open={stateSnackbar}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        sx={{ mt: 6 }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={feedback.status as AlertColor}
+          sx={{ width: '100%' }}
+        >
+          {feedback.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
