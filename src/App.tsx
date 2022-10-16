@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { typeReducers } from '@redux/modules/rootReducer';
 import { getTheme } from '@styles/themes';
 
-import { Private, HomePrivate } from '@pages/Private';
+import { Private, HomePrivate, Profile } from '@pages/Private';
 import { Home, Login, Public } from '@pages/Public';
 
 export function App() {
@@ -25,7 +25,7 @@ export function App() {
         <Routes>
           <Route path="/auth" element={<Private />}>
             <Route index element={<HomePrivate />} />
-            <Route path="profile" element={<h1>Private3213</h1>} />
+            <Route path="profile" element={<Profile />} />
           </Route>
 
           <Route path="/" element={<Public />}>
