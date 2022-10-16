@@ -62,6 +62,10 @@ const slice = createSlice({
     login: (_, action: PayloadAction<TAction>) => {
       sessionStorage.setItem(`persist:${keySession}`, JSON.stringify(action.payload));
       const decoded = jwtDecode<TJwtDecode>(action.payload.token);
+      if (decoded.exp * 1000 < Date.now()) {
+        sessionStorage.removeItem(`persist:${keySession}`);
+        return initialState;
+      }
       return {
         token: action.payload.token,
         remember: action.payload.remember,
