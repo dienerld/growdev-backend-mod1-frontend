@@ -6,10 +6,8 @@ import jwtDecode from 'jwt-decode';
 
 type TAction = {
   token: string,
-  user: {
-    name: string,
-    email: string,
-  }
+  name?: string,
+  email?: string,
   remember: boolean,
 }
 
@@ -28,12 +26,14 @@ type TJwtDecode = {
   email: string;
 }
 
-export const keySession = 'dnr-growdev-modbackend-user';
+const isDev = process.env.NODE_ENV !== 'production';
+const key = 'dnr-growdev-modbackend-user';
+const keySession = isDev ? `dev:${key}` : key;
 
 export const isLogged = createAsyncThunk(
   'users/isLogged',
   () => {
-    const dataStorage = sessionStorage.getItem(`persist:${keySession}`);
+    const dataStorage = sessionStorage.getItem(keySession);
     if (!dataStorage) {
       return false;
     }
@@ -59,10 +59,10 @@ const slice = createSlice({
   initialState,
   reducers: {
     login: (_, action: PayloadAction<TAction>) => {
-      sessionStorage.setItem(`persist:${keySession}`, JSON.stringify(action.payload));
+      sessionStorage.setItem(keySession, JSON.stringify(action.payload));
       const decoded = jwtDecode<TJwtDecode>(action.payload.token);
       if (decoded.exp * 1000 < Date.now()) {
-        sessionStorage.removeItem(`persist:${keySession}`);
+        sessionStorage.removeItem(keySession);
         return initialState;
       }
       return {
@@ -73,12 +73,12 @@ const slice = createSlice({
       };
     },
     updateUser: (state, action: PayloadAction<TAction>) => {
-      state.name = action.payload.user.name;
-      state.email = action.payload.user.email;
+      state.name = action.payload.name!;
+      state.email = action.payload.email!;
       return state;
     },
     logout: () => {
-      sessionStorage.removeItem(`persist:${keySession}`);
+      sessionStorage.removeItem(keySession);
       return initialState;
     },
   },

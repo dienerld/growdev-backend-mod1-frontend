@@ -100,7 +100,7 @@ export function Profile() {
         }, { headers });
 
         if (response.status === 200) {
-          dispatch(userActions.updateUser({ ...user, user: { name: newName, email: newEmail } }));
+          dispatch(userActions.updateUser({ ...user, name: newName, email: newEmail }));
           setFeedback({ status: 'success', message: 'Personal data successfully updated!' });
           handleOpenSnackbar();
           setIsSubmitting(false);
