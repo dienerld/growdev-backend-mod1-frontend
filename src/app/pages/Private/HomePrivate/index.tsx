@@ -12,7 +12,7 @@ import { NoTask } from '../components/NoTask';
 import { NewTask } from '../components/NewTask';
 import { Task } from '../components/Task';
 
-type TTabValue = 'all' | 'completed' | 'upcoming' | 'hidden';
+type TTabValue = 'all' | 'completed' | 'incomplete' | 'hidden';
 
 export function HomePrivate() {
   const [loading, setLoading] = useState(true);
@@ -26,7 +26,7 @@ export function HomePrivate() {
   const [currentPage, setCurrentPage] = useState(1);
   const [taskPage, setTaskPage] = useState(tasks.slice(0, maxTaskPerPage));
 
-  const [tab, setTab] = useState<TTabValue>('upcoming');
+  const [tab, setTab] = useState<TTabValue>('incomplete');
 
   const handleChangePagination = (_: any, value: number) => {
     setCurrentPage(value);
@@ -44,7 +44,7 @@ export function HomePrivate() {
       case 'completed':
         setTasks(tasksRedux.filter((task) => task.done && !task.hidden));
         break;
-      case 'upcoming':
+      case 'incomplete':
         setTasks(tasksRedux.filter((task) => !task.done && !task.hidden));
         break;
       case 'hidden':
@@ -90,7 +90,7 @@ export function HomePrivate() {
             className="mb-4 sm:mx-6"
             sx={{ minHeight: '36px', '& div': { height: '2.2rem' }, '& .MuiTabs-indicator': { backgroundColor: 'background.paper' } }}
           >
-            <Tab label="Upcoming" className="normal-case" value="upcoming" />
+            <Tab label="Incomplete" className="normal-case" value="incomplete" />
             <Tab label="All" className="normal-case" value="all" />
             <Tab label="Completed" className="normal-case" value="completed" />
             <Tab label="Hidden" className="normal-case" value="hidden" />
