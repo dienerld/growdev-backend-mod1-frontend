@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import validator from 'validator';
 
 import { LockClosedIcon, LockOpenIcon } from '@heroicons/react/20/solid';
+
 import {
-  Box, Button, Checkbox,
+  Box, Button, Checkbox, IconButton, InputAdornment,
   FormControlLabel, Paper, TextField, Typography,
 } from '@mui/material';
+import {
+  Visibility as VisibilityOutlinedIcon,
+  VisibilityOff as VisibilityOffOutlinedIcon,
+} from '@mui/icons-material';
+
 import { useAppDispatch } from '@redux/hooks';
 import { userActions } from '@redux/modules/user';
 import { axios } from '@services/axios';
@@ -27,6 +33,10 @@ export function SignIn({ handleFlip }: SignInProps) {
 
   const [rememberMe, setRememberMe] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -116,16 +126,14 @@ export function SignIn({ handleFlip }: SignInProps) {
                 helperText={emailIsValid ? '' : 'Please enter a valid email'}
                 InputProps={{
                   className: 'rounded-t-md sm:text-sm text-inherit border-inherit',
-                  sx: {
-                    '& input:focus': { boxShadow: 0 },
-                  },
+                  sx: { '& input:focus': { boxShadow: 0 } },
                 }}
               />
 
               <TextField
                 id="password"
                 label="Password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={handlePasswordChange}
                 fullWidth
@@ -133,10 +141,20 @@ export function SignIn({ handleFlip }: SignInProps) {
                 error={!passwordIsValid}
                 helperText={passwordIsValid ? '' : 'Password must be at least 5 characters'}
                 InputProps={{
-                  className: 'rounded-none rounded-b-md  border-gray-300 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm text-inherit',
-                  sx: {
-                    '& input:focus': { boxShadow: 0 },
-                  },
+                  className: 'rounded-t-md sm:text-sm text-inherit border-inherit',
+                  sx: { '& input:focus': { boxShadow: 0 } },
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
                 }}
               />
             </Box>
@@ -154,15 +172,6 @@ export function SignIn({ handleFlip }: SignInProps) {
               )}
                 label="Remember me"
               />
-
-              <Box className="text-sm">
-                <Link
-                  to="forgot-password"
-                  className="font-medium text-indigo-600 hover:text-indigo-500"
-                >
-                  Forgot your password?
-                </Link>
-              </Box>
             </Box>
 
             <div>

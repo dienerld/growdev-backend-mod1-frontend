@@ -3,8 +3,8 @@ import validator from 'validator';
 
 import { LockClosedIcon, LockOpenIcon } from '@heroicons/react/20/solid';
 import {
-  Alert, AlertColor,
-  Box, Button, IconButton, InputAdornment, Paper, TextField,
+  Alert, AlertColor, Box, Button,
+  IconButton, InputAdornment, Paper, TextField,
 } from '@mui/material';
 import {
   Visibility as VisibilityOutlinedIcon,
@@ -173,7 +173,10 @@ export function SignUp({ handleFlip }: SignUpProps) {
                 helperText={nameIsValid ? '' : 'Name must be only letters and spaces'}
                 className="mb-4"
                 InputProps={{
-                  className: 'rounded-md border-gray-300 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm',
+                  className: 'rounded-t-md sm:text-sm text-inherit border-inherit',
+                  sx: {
+                    '& input:focus': { boxShadow: 0 },
+                  },
                 }}
               />
 
@@ -188,7 +191,8 @@ export function SignUp({ handleFlip }: SignUpProps) {
                 helperText={emailIsValid ? '' : 'Email must be valid'}
                 className="mb-4"
                 InputProps={{
-                  className: 'rounded-md border-gray-300 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm',
+                  className: 'rounded-t-md sm:text-sm text-inherit border-inherit',
+                  sx: { '& input:focus': { boxShadow: 0 } },
                 }}
               />
 
@@ -203,7 +207,8 @@ export function SignUp({ handleFlip }: SignUpProps) {
                 fullWidth
                 className="mb-4"
                 InputProps={{
-                  className: 'rounded-md border-gray-300 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm',
+                  className: 'rounded-t-md sm:text-sm text-inherit border-inherit',
+                  sx: { '& input:focus': { boxShadow: 0 } },
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
@@ -230,7 +235,8 @@ export function SignUp({ handleFlip }: SignUpProps) {
                 fullWidth
                 className="mb-4"
                 InputProps={{
-                  className: 'rounded-md border-gray-300 placeholder-gray-500 focus:z-10 sm:text-sm',
+                  className: 'rounded-t-md sm:text-sm text-inherit',
+                  sx: { '& input:focus': { boxShadow: 0 } },
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
