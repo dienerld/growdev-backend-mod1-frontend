@@ -42,7 +42,7 @@ export function HomePrivate() {
         setTasks(tasksRedux);
         break;
       case 'completed':
-        setTasks(tasksRedux.filter((task) => task.done));
+        setTasks(tasksRedux.filter((task) => task.done && !task.hidden));
         break;
       case 'upcoming':
         setTasks(tasksRedux.filter((task) => !task.done && !task.hidden));
@@ -83,7 +83,7 @@ export function HomePrivate() {
         <>
           <Tabs
             variant="fullWidth"
-            textColor="text.primary"
+            textColor={'text.primary' as 'primary'}
             indicatorColor={undefined}
             value={tab}
             onChange={(_, value) => { setTab(value); handleFilterTasks(value); }}

@@ -43,7 +43,7 @@ export const Navbar = ({ settings }: HeaderProps) => {
 
   const handleLogout = () => {
     handleCloseUserMenu();
-    dispatch(userActions.logout(null));
+    dispatch(userActions.logout());
     dispatch(taskActions.clearTasks());
     redirect('/');
   };
