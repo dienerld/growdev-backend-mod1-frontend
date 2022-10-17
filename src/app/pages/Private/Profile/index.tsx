@@ -1,4 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import validator from 'validator';
 import { shade } from 'polished';
 
@@ -9,7 +10,7 @@ import {
   Paper, Snackbar, TextField, Typography, useTheme,
 } from '@mui/material';
 import {
-  CloseRounded as CloseOutlinedIcon,
+  HighlightOff as CloseOutlinedIcon,
   Visibility as VisibilityOutlinedIcon,
   VisibilityOff as VisibilityOffOutlinedIcon,
 } from '@mui/icons-material';
@@ -22,6 +23,7 @@ export function Profile() {
   const user = useAppSelector((state) => state.user);
   const theme = useTheme();
   const dispatch = useAppDispatch();
+  const redirect = useNavigate();
 
   const [newName, setNewName] = useState<string>(user.name!);
   const [newEmail, setNewEmail] = useState<string>(user.email!);
@@ -88,6 +90,10 @@ export function Profile() {
       : setEmailIsValid(false);
   };
 
+  const handleClose = () => {
+    redirect('/auth');
+  };
+
   const handleSubmit = () => {
     (async () => {
       try {
@@ -129,17 +135,32 @@ export function Profile() {
   }, [nameIsValid, emailIsValid, passwordIsValid, passwordConfirmation, newName, newEmail]);
 
   useEffect(() => {
+    if (user.name === newName && user.email === newEmail) {
+      setIsSubmitting(false);
+    }
+  }, [newName, newEmail, password, passwordConfirmation]);
+
+  useEffect(() => {
+    if (password === '' && passwordConfirmation === '') {
+      setPasswordIsValid(true);
+      setPasswordConfirmationIsValid(true);
+    }
+  }, [password, passwordConfirmation]);
+
+  useEffect(() => {
     setIsSubmitting(false);
   }, []);
 
   return (
     <Box className="grid grid-rows-12 gap-10 mt-10">
 
-      <Box className="row-span-2 flex flex-1 justify-center">
+      <Box className="row-span-2 flex flex-1 justify-center items-center">
         <Typography variant="h4">
           Profile
         </Typography>
-        <CloseOutlinedIcon />
+        <div className=" absolute right-[04%] sm:right-[08%] md:right-[12%] lg:right-1/4 xl:right-[30%]">
+          <CloseOutlinedIcon fontSize="large" className="cursor-pointer" onClick={handleClose} />
+        </div>
       </Box>
 
       {/* Form */}
