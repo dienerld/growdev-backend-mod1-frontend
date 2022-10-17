@@ -79,7 +79,7 @@ export function HomePrivate() {
       {loading && <CircularProgress />}
       {!loading && tasksRedux.length === 0 && (<NoTask />)}
 
-      {!loading && (
+      {!loading && tasksRedux.length > 0 && (
         <>
           <Tabs
             variant="fullWidth"
