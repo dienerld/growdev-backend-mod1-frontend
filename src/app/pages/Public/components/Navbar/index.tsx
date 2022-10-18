@@ -48,7 +48,6 @@ export const Navbar = () => {
           </Typography>
 
           {/* <= MD */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', sm: 'none' } }} />
           <AdbIcon sx={{ display: { xs: 'flex', sm: 'none' }, mr: 1 }} />
           <Typography
             variant="h6"
@@ -68,10 +67,7 @@ export const Navbar = () => {
           >
             Welcome
           </Typography>
-          <Box
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' } }}
-            className="justify-evenly mx-4"
-          />
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' } }} />
 
           <Box sx={{ flexGrow: 0 }}>
             <LightModeIcon className="text-sm" />

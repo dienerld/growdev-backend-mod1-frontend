@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { toggleFlipCard } from '@/app/redux/modules/cardFlipper';
 
+import './styles.css';
+
 export function Home() {
   const redirect = useNavigate();
   const theme = useTheme();
@@ -23,17 +25,20 @@ export function Home() {
   };
 
   return (
-    <Box className="absolute top-0 grid grid-flow-col h-full w-full overflow-hidden">
-      <Grid
-        item
-        className="grid-cols-12 sm:grid-cols-6 sm:bg-none"
+    <Box className="absolute top-0 grid grid-flow-col h-screen w-screen overflow-hidden">
+      <Box
+        className="absolute flex sm:grid-cols-6 sm:bg-none -z-10"
         sx={{
           backgroundImage: `linear-gradient(90deg, ${theme.palette.background.default} 0%, rgba(217, 217, 217, 0) 90%), url(${bg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
+          height: '101%',
+          width: '101%',
+          filter: 'blur(5px)',
         }}
-      >
+      />
+      <Grid item className="grid-cols-12 sm:grid-cols-6 sm:bg-none">
         <Box className="flex flex-col flex-1 h-full items-center justify-center gap-10">
           <Box className="w-3/5 flex flex-col gap-10 justify-center items-center text-center">
             <Typography variant="body1" className="text-2xl sm:text-4xl">
