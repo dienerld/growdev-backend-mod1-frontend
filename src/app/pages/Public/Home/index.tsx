@@ -1,16 +1,21 @@
 import {
-  Box, Button, Grid, Typography,
+  Box, Button, Grid, Typography, useTheme,
 } from '@mui/material';
 import bg from '@assets/a.svg';
+import { shade } from 'polished';
 
 export function Home() {
+  const theme = useTheme();
+
+  const isDark = theme.palette.mode === 'dark';
+
   return (
     <Box className="absolute top-0 grid grid-flow-col h-full w-full overflow-hidden">
       <Grid
         item
         className="grid-cols-12 sm:grid-cols-6 sm:bg-none"
         sx={{
-          backgroundImage: `linear-gradient(90deg, #EDDBDC 0%, rgba(217, 217, 217, 0) 90%), url(${bg})`,
+          backgroundImage: `linear-gradient(90deg, ${theme.palette.background.default} 0%, rgba(217, 217, 217, 0) 90%), url(${bg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -30,7 +35,15 @@ export function Home() {
               variant="contained"
               className="rounded-full normal-case"
               size="large"
-              sx={{ color: 'text.primary', backgroundColor: 'background.paper' }}
+              sx={{
+                color: 'text.primary',
+                backgroundColor: 'background.paper',
+                '&:hover': {
+                  color: isDark ? shade(1, theme.palette.text.primary) : 'text.secondary',
+                  borderColor: { sm: 'text.primary' },
+                  backgroundColor: shade(isDark ? -0.3 : 0.3, theme.palette.background.paper),
+                },
+              }}
             >
               Register Now
             </Button>
@@ -38,7 +51,13 @@ export function Home() {
               variant="outlined"
               className="rounded-full normal-case"
               size="large"
-              sx={{ color: 'text.primary', borderColor: 'text.primary' }}
+              sx={{
+                color: { sm: 'text.primary' },
+                borderColor: { sm: 'text.primary' },
+                '&:hover': {
+                  borderColor: { sm: shade(0.3, theme.palette.text.primary) },
+                },
+              }}
             >
               Sign In
             </Button>
@@ -49,7 +68,7 @@ export function Home() {
       <Grid item className="hidden sm:flex sm:grid-cols-6 h-full overflow-hidden">
         <Box
           sx={{
-            backgroundImage: `linear-gradient(90deg, #EDDBDC 0%, rgba(217, 217, 217, 0) 90%),url(${bg})`,
+            backgroundImage: `linear-gradient(90deg, ${theme.palette.background.default} 0%, rgba(217, 217, 217, 0) 90%),url(${bg})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
