@@ -25,7 +25,7 @@ export const Navbar = () => {
   return (
     <AppBar
       position="relative"
-      className="shadow-none"
+      className="shadow-none z-[1000]"
     >
       <Container maxWidth={false}>
         <Toolbar disableGutters>
@@ -38,7 +38,6 @@ export const Navbar = () => {
             sx={{
               mr: 2,
               display: { xs: 'none', sm: 'flex' },
-              fontFamily: 'monospace',
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',

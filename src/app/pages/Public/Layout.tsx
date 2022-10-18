@@ -10,15 +10,11 @@ export function Public() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (user.remember) {
-      redirect('/auth');
-    }
+    if (user.remember) { redirect('/auth'); }
 
     (async () => {
       const { payload: logged } = await dispatch(isLogged());
-      if (logged) {
-        redirect('/auth');
-      }
+      if (logged) { redirect('/auth'); }
     })();
   }, []);
 
