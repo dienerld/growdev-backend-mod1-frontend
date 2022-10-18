@@ -7,8 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { toggleFlipCard } from '@/app/redux/modules/cardFlipper';
 
-import './styles.css';
-
 export function Home() {
   const redirect = useNavigate();
   const theme = useTheme();
