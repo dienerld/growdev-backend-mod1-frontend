@@ -3,11 +3,24 @@ import {
 } from '@mui/material';
 import bg from '@assets/a.svg';
 import { shade } from 'polished';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { toggleFlipCard } from '@/app/redux/modules/cardFlipper';
 
 export function Home() {
+  const redirect = useNavigate();
   const theme = useTheme();
-
+  const dispatch = useAppDispatch();
   const isDark = theme.palette.mode === 'dark';
+
+  const handleCreateAccount = () => {
+    dispatch(toggleFlipCard(true));
+    redirect('/account');
+  };
+  const handleLogin = () => {
+    dispatch(toggleFlipCard(false));
+    redirect('/account');
+  };
 
   return (
     <Box className="absolute top-0 grid grid-flow-col h-full w-full overflow-hidden">
@@ -35,6 +48,7 @@ export function Home() {
               variant="contained"
               className="rounded-full normal-case"
               size="large"
+              onClick={handleCreateAccount}
               sx={{
                 color: 'text.primary',
                 backgroundColor: 'background.paper',
@@ -51,6 +65,7 @@ export function Home() {
               variant="outlined"
               className="rounded-full normal-case"
               size="large"
+              onClick={handleLogin}
               sx={{
                 color: { sm: 'text.primary' },
                 borderColor: { sm: 'text.primary' },
