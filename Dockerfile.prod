@@ -1,0 +1,16 @@
+FROM node:16.16.0-alpine
+
+WORKDIR /app
+
+COPY . .
+
+ENV NODE_ENV=production
+
+RUN yarn global add serve
+RUN yarn
+RUN yarn build
+
+ENTRYPOINT ["serve", "-s", "dist"]
+
+EXPOSE 5173
+EXPOSE 3000
