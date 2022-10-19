@@ -1,9 +1,10 @@
 import {
   Box, Button, Grid, Typography, useTheme,
 } from '@mui/material';
-import bg from '@assets/a.svg';
 import { shade } from 'polished';
 import { useNavigate } from 'react-router-dom';
+
+import bg from '@assets/bg-home.svg';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { toggleFlipCard } from '@/app/redux/modules/cardFlipper';
 
