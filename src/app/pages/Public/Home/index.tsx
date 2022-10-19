@@ -23,6 +23,8 @@ export function Home() {
     redirect('/account');
   };
 
+  // TODO: fix styles when browser auto completes input
+
   return (
     <Box className="absolute top-0 grid grid-flow-col h-screen w-screen overflow-hidden">
       <Box

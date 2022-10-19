@@ -6,8 +6,6 @@ O objetivo deste projeto é criar um cliente para a [API REST](https://github.co
 
 ---
 
-## Como rodar o projeto
-
 ### Pré-requisitos
 
 - NodeJS
