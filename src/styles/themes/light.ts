@@ -8,7 +8,7 @@ export const lightTheme = createTheme({
       secondary: '#EDDBDC',
     },
     primary: {
-      main: '#796162',
+      main: '#262021',
     },
     secondary: {
       main: '#EDDBDC',
@@ -16,6 +16,12 @@ export const lightTheme = createTheme({
     background: {
       paper: '#796162',
       default: '#eddbdc',
+    },
+    error: {
+      main: '#6d0000',
+    },
+    warning: {
+      main: '#a69001',
     },
     custom: {
       icons: {

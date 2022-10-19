@@ -24,12 +24,10 @@ export const Navbar = () => {
 
   return (
     <AppBar
-      position="static"
-      className="bg-[#262021]   shadow-none "
+      position="relative"
+      className="shadow-none z-[1000]"
     >
-      <Container
-        maxWidth={false}
-      >
+      <Container maxWidth={false}>
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', sm: 'flex' }, mr: 1 }} />
           <Typography
@@ -40,7 +38,6 @@ export const Navbar = () => {
             sx={{
               mr: 2,
               display: { xs: 'none', sm: 'flex' },
-              fontFamily: 'monospace',
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',
@@ -51,7 +48,6 @@ export const Navbar = () => {
           </Typography>
 
           {/* <= MD */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', sm: 'none' } }} />
           <AdbIcon sx={{ display: { xs: 'flex', sm: 'none' }, mr: 1 }} />
           <Typography
             variant="h6"
@@ -71,10 +67,7 @@ export const Navbar = () => {
           >
             Welcome
           </Typography>
-          <Box
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' } }}
-            className="justify-evenly mx-4"
-          />
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' } }} />
 
           <Box sx={{ flexGrow: 0 }}>
             <LightModeIcon className="text-sm" />

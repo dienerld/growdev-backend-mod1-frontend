@@ -3,10 +3,13 @@ import validator from 'validator';
 
 import { LockClosedIcon, LockOpenIcon } from '@heroicons/react/20/solid';
 import {
-  Alert,
-  AlertColor,
-  Box, Button, Paper, TextField,
+  Alert, AlertColor, Box, Button,
+  IconButton, InputAdornment, Paper, TextField,
 } from '@mui/material';
+import {
+  Visibility as VisibilityOutlinedIcon,
+  VisibilityOff as VisibilityOffOutlinedIcon,
+} from '@mui/icons-material';
 import { axios } from '@/app/services/axios';
 
 type SignUpProps = {
@@ -29,6 +32,14 @@ export function SignUp({ handleFlip }: SignUpProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [error, setError] = useState({ status: 'success', message: '' });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
+
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const handleClickShowPasswordConfirm = () => setShowPasswordConfirm(!showPasswordConfirm);
+  const handleMouseDownPasswordConfirm = () => setShowPasswordConfirm(!showPasswordConfirm);
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value.replace(/\s{1,}/, '');
@@ -123,10 +134,10 @@ export function SignUp({ handleFlip }: SignUpProps) {
             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight ">
               Sign up to your account
             </h2>
-            <p className="mt-2 text-center text-sm text-gray-600">
+            <p className="mt-2 text-center text-sm">
               Or{' '}
               <button
-                className="font-medium text-indigo-600 hover:text-indigo-500"
+                className="font-medium text-indigo-700 hover:text-indigo-600"
                 onClick={handleFlip}
                 type="button"
               >
@@ -138,7 +149,7 @@ export function SignUp({ handleFlip }: SignUpProps) {
             severity={error.status as AlertColor}
             sx={{
               color: 'text.primary',
-              display: hasError ? 'flex' : 'flex',
+              display: hasError ? 'flex' : 'none',
             }}
           >{error.message || 'Internal Server error'}
           </Alert>
@@ -162,7 +173,10 @@ export function SignUp({ handleFlip }: SignUpProps) {
                 helperText={nameIsValid ? '' : 'Name must be only letters and spaces'}
                 className="mb-4"
                 InputProps={{
-                  className: 'rounded-md border-gray-300 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm',
+                  className: 'rounded-t-md sm:text-sm text-inherit border-inherit',
+                  sx: {
+                    '& input:focus': { boxShadow: 0 },
+                  },
                 }}
               />
 
@@ -177,14 +191,15 @@ export function SignUp({ handleFlip }: SignUpProps) {
                 helperText={emailIsValid ? '' : 'Email must be valid'}
                 className="mb-4"
                 InputProps={{
-                  className: 'rounded-md border-gray-300 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm',
+                  className: 'rounded-t-md sm:text-sm text-inherit border-inherit',
+                  sx: { '& input:focus': { boxShadow: 0 } },
                 }}
               />
 
               <TextField
                 id="password-register"
                 label="Password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={handlePasswordChange}
                 error={!passwordIsValid}
@@ -192,14 +207,27 @@ export function SignUp({ handleFlip }: SignUpProps) {
                 fullWidth
                 className="mb-4"
                 InputProps={{
-                  className: 'rounded-md border-gray-300 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm',
+                  className: 'rounded-t-md sm:text-sm text-inherit border-inherit',
+                  sx: { '& input:focus': { boxShadow: 0 } },
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
                 }}
               />
 
               <TextField
                 id="password-repeat"
                 label="Password Confirmation"
-                type="password"
+                type={showPasswordConfirm ? 'text' : 'password'}
                 value={passwordConfirmation}
                 onChange={handlePasswordConfirmationChange}
                 error={!passwordConfirmationIsValid}
@@ -207,7 +235,24 @@ export function SignUp({ handleFlip }: SignUpProps) {
                 fullWidth
                 className="mb-4"
                 InputProps={{
-                  className: 'rounded-md border-gray-300 placeholder-gray-500 focus:z-10 sm:text-sm',
+                  className: 'rounded-t-md sm:text-sm text-inherit',
+                  sx: { '& input:focus': { boxShadow: 0 } },
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPasswordConfirm}
+                        onMouseDown={handleMouseDownPasswordConfirm}
+                        edge="end"
+                      >
+                        {
+                          showPasswordConfirm
+                            ? <VisibilityOutlinedIcon />
+                            : <VisibilityOffOutlinedIcon />
+                        }
+                      </IconButton>
+                    </InputAdornment>
+                  ),
                 }}
               />
 

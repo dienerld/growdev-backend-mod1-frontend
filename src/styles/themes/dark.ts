@@ -17,6 +17,12 @@ export const darkTheme = createTheme({
       primary: '#ffffff',
       secondary: '#EDDBDC',
     },
+    error: {
+      main: '#6d0000',
+    },
+    warning: {
+      main: '#a69001',
+    },
     custom: {
       icons: {
         delete: '#FD7179',

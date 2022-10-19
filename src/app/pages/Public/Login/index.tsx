@@ -1,19 +1,22 @@
 import { Box } from '@mui/material';
-import { useState } from 'react';
 import ReactCardFlip from 'react-card-flip';
+import { useSelector } from 'react-redux';
+import { typeReducers } from '@/app/redux/modules/rootReducer';
+import { toggleFlipCard } from '@/app/redux/modules/cardFlipper';
+import { useAppDispatch } from '@/app/redux/hooks';
 import { SignIn } from './SignIn';
 import { SignUp } from './SignUp';
 
 export function Login() {
-  const [isFlipped, setIsFlipped] = useState(false);
+  const isFlipped = useSelector((state: typeReducers) => state.cardFlipper);
+  const dispatch = useAppDispatch();
 
   const handleFlip = () => {
-    setIsFlipped(!isFlipped);
+    dispatch(toggleFlipCard(!isFlipped));
   };
 
   return (
-    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 h-screen min-h-full px-4 sm:px-6 lg:px-8">
-
+    <div className="flex items-center px-4 mt-10 overflow-hidden">
       <Box className="flex flex-1 justify-center content-center items-center">
 
         <ReactCardFlip
@@ -26,10 +29,6 @@ export function Login() {
 
           <SignUp handleFlip={handleFlip} />
         </ReactCardFlip>
-      </Box>
-
-      <Box className="hidden lg:flex flex-1 justify-center content-center items-center">
-        Dienerr
       </Box>
     </div>
   );

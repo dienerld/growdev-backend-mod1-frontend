@@ -43,7 +43,7 @@ export const Navbar = ({ settings }: HeaderProps) => {
 
   const handleLogout = () => {
     handleCloseUserMenu();
-    dispatch(userActions.logout(null));
+    dispatch(userActions.logout());
     dispatch(taskActions.clearTasks());
     redirect('/');
   };
@@ -51,7 +51,7 @@ export const Navbar = ({ settings }: HeaderProps) => {
   const { name } = useAppSelector((state: typeReducers) => state.user);
   return (
     <AppBar
-      position="static"
+      position="relative"
       className="shadow-none"
     >
       <Container
@@ -70,13 +70,17 @@ export const Navbar = ({ settings }: HeaderProps) => {
           </Box>
 
           {/* <= MD */}
-          <AdbIcon sx={{ display: { xs: 'flex', sm: 'none' }, mr: 1, position: 'absolute' }} />
+          <Box sx={{ display: { xs: 'flex', sm: 'none' }, mr: 1, position: 'absolute' }}>
+            <Link to="/">
+              <AdbIcon />
+            </Link>
+          </Box>
           <Box>
             <IconButton
               onClick={handleOpenUserMenu}
               sx={{ p: 0 }}
             >
-              <Avatar alt={name} src={`https://robohash.org/${new Date().getMinutes()}`} />
+              <Avatar alt={name} src={`https://robohash.org/${name}`} />
             </IconButton>
             <Menu
               sx={{ mt: '45px' }}
