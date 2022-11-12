@@ -34,9 +34,9 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
   const theme = useTheme();
   const headers = { Authorization: `Bearer ${user.token}` };
 
-  const [date, setDate] = useState<Dayjs | null>(dayjs(new Date(task.date)));
+  const [date, setDate] = useState<Dayjs | null>(dayjs(task.date));
   const [hourStr, minuteStr] = task.hour.split(':');
-  const [hour, setHour] = useState<Dayjs | null>(dayjs(new Date()).set('hour', Number(hourStr)).set('minute', Number(minuteStr)));
+  const [hour, setHour] = useState<Dayjs| null>(dayjs(new Date()).set('hour', Number(hourStr)).set('minute', Number(minuteStr)));
   const [title, setTitle] = useState(task.title);
 
   const [openModalEdit, setOpenModalEdit] = useState(false);
@@ -64,6 +64,7 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
   const handleUpdateTask = async () => {
     try {
       const newData: Partial<typeof task> = {
+        // @ts-expect-error
         title, date, hour: hour?.format('HH:mm'),
       };
       await axios.put(`/tasks/${task.id}`, newData, { headers })

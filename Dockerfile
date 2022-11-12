@@ -4,9 +4,15 @@ WORKDIR /app
 
 COPY . .
 
-ENV NODE_ENV=development
+
+
+RUN yarn global add serve
 RUN yarn
+RUN yarn build
+RUN yarn install --production --frozen-lockfile
 
-ENTRYPOINT [ "tail", "-f", "/dev/null" ]
+ENV PORT=8080
+ENV VITE_BASE_URL=https://dnr-todo-api.fly.dev/
+ENTRYPOINT ["serve", "-p", "8080", "-s", "dist"]
 
-EXPOSE 5173
+EXPOSE $PORT
