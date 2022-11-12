@@ -28,7 +28,7 @@ export function Private() {
     if (totalTasks === 0) {
       const headers = { Authorization: `Bearer ${user.token}` };
       axios.get<ResponseTasks>('/tasks', { headers })
-        .then(({ data }) => dispatch(taskActions.addManyTasks(data)))
+        .then(({ data }) => dispatch(taskActions.addManyTasks(data.tasks)))
         .catch(() => redirect('/'));
     }
   }, []);

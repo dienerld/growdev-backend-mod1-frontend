@@ -7,7 +7,10 @@ export type TTask = {
   hidden: boolean;
 }
 
-export type ResponseTasks = TTask[];
+export type ResponseTasks = {
+  tasks: TTask[];
+  total: number
+};
 
 export type ResponseUser = {
   id: string;

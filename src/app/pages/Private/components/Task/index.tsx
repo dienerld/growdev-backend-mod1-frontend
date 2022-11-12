@@ -45,7 +45,9 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
 
   const handleToggleDone = () => {
     axios.put(`/tasks/${task.id}`, { done: !task.done }, { headers })
-      .then(({ data }) => dispatch(taskActions.updateTask({ id: task.id, changes: data })))
+      .then(() => dispatch(taskActions.updateTask(
+        { id: task.id, changes: { ...task, done: !task.done } },
+      )))
       .catch(() => null);
   };
 
@@ -61,18 +63,25 @@ export function Task({ task, handleOpenSnackbar, handleSetMessage }: TTaskProps)
 
   const handleUpdateTask = async () => {
     try {
-      const { data } = await axios.put(`/tasks/${task.id}`, { title, date, hour: hour?.format('HH:mm') }, { headers });
-      dispatch(taskActions.updateTask({ id: task.id, changes: data }));
-      handleSetMessage('Task updated');
-      handleOpenSnackbar();
-      handleClose();
+      const newData: Partial<typeof task> = {
+        title, date, hour: hour?.format('HH:mm'),
+      };
+      await axios.put(`/tasks/${task.id}`, newData, { headers })
+        .then(() => {
+          dispatch(taskActions.updateTask({ id: task.id, changes: { ...task, ...newData } }));
+          handleSetMessage('Task updated');
+          handleOpenSnackbar();
+          handleClose();
+        });
     } catch (error) { /* */ }
   };
 
   const handleToggleVisibility = () => {
     axios.put(`/tasks/${task.id}`, { hidden: !task.hidden }, { headers })
-      .then(({ data }) => {
-        dispatch(taskActions.updateTask({ id: task.id, changes: data }));
+      .then(() => {
+        dispatch(taskActions.updateTask(
+          { id: task.id, changes: { ...task, hidden: !task.hidden } },
+        ));
         handleSetMessage('Task visibility changed');
         handleOpenSnackbar();
       })

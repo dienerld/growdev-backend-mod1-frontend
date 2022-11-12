@@ -95,31 +95,27 @@ export function Profile() {
   };
 
   const handleSubmit = () => {
-    (async () => {
-      try {
-        const headers = { Authorization: `Bearer ${user.token}` };
-        const response = await axios.put('/users', {
-          name: newName,
-          email: newEmail,
-          password,
-          password_confirm: passwordConfirmation,
-        }, { headers });
-
-        if (response.status === 200) {
-          dispatch(userActions.updateUser({ ...user, name: newName, email: newEmail }));
-          setFeedback({ status: 'success', message: 'Personal data successfully updated!' });
-          handleOpenSnackbar();
-          setIsSubmitting(false);
-        }
-      } catch (err: any) {
+    const headers = { Authorization: `Bearer ${user.token}` };
+    axios.put('/users', {
+      name: newName,
+      email: newEmail,
+      password,
+      password_confirm: passwordConfirmation,
+    }, { headers })
+      .then(() => {
+        dispatch(userActions.updateUser({ ...user, name: newName, email: newEmail }));
+        setFeedback({ status: 'success', message: 'Personal data successfully updated!' });
+        handleOpenSnackbar();
+        setIsSubmitting(false);
+      })
+      .catch((err: any) => {
         handleOpenSnackbar();
         if (err?.response.status === 400) {
           setFeedback({ message: err?.response?.data?.error || err.message, status: 'warning' });
         } else {
           setFeedback({ message: err?.response?.data?.error || err.message, status: 'error' });
         }
-      }
-    })();
+      });
   };
 
   useEffect(() => {
