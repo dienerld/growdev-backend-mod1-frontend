@@ -6,7 +6,7 @@ import { LockClosedIcon, LockOpenIcon } from '@heroicons/react/20/solid';
 
 import {
   Box, Button, Checkbox, IconButton, InputAdornment,
-  FormControlLabel, Paper, TextField, Typography,
+  FormControlLabel, Paper, TextField, Typography, Alert, AlertColor,
 } from '@mui/material';
 import {
   Visibility as VisibilityOutlinedIcon,
@@ -33,6 +33,9 @@ export function SignIn({ handleFlip }: SignInProps) {
 
   const [rememberMe, setRememberMe] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [hasError, setHasError] = useState(false);
+  const [error, setError] = useState({ status: 'success', message: '' });
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -65,9 +68,18 @@ export function SignIn({ handleFlip }: SignInProps) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     (async () => {
-      const { data } = await axios.post('/users/login', { email, password });
-      dispatch(userActions.login({ token: data.token, remember: rememberMe }));
-      redirect('/auth');
+      try {
+        const { data } = await axios.post('/users/login', { email, password });
+        dispatch(userActions.login({ token: data.token, remember: rememberMe }));
+        redirect('/auth');
+      } catch (err: any) {
+        setHasError(true);
+        if (err?.response.status === 400) {
+          setError({ message: err?.response?.data?.message || err.message, status: 'warning' });
+        } else {
+          setError({ message: err?.response?.data?.message || err.message, status: 'error' });
+        }
+      }
     })();
   };
 
@@ -106,6 +118,14 @@ export function SignIn({ handleFlip }: SignInProps) {
               </button>
             </Typography>
           </div>
+          <Alert
+            severity={error.status as AlertColor}
+            sx={{
+              color: 'text.primary',
+              display: hasError ? 'flex' : 'none',
+            }}
+          >{error.message || 'Internal Server error'}
+          </Alert>
           <Box
             component="form"
             noValidate

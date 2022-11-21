@@ -92,9 +92,9 @@ export function SignUp({ handleFlip }: SignUpProps) {
       } catch (err: any) {
         setHasError(true);
         if (err?.response.status === 400) {
-          setError({ message: err?.response?.data?.error || err.message, status: 'warning' });
+          setError({ message: err?.response?.data?.message || err.message, status: 'warning' });
         } else {
-          setError({ message: err?.response?.data?.error || err.message, status: 'error' });
+          setError({ message: err?.response?.data?.message || err.message, status: 'error' });
         }
       }
     })();
