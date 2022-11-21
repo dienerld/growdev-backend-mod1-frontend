@@ -9,4 +9,4 @@ RUN yarn --frozen-lockfile
 RUN yarn build
 RUN yarn install --production --frozen-lockfile
 
-ENTRYPOINT ["serve", "-p", "7777", "-s","dist"]
+ENTRYPOINT ["serve", "-p", "8080", "-s","dist"]
